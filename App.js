@@ -36,39 +36,36 @@ import GroupChannelInvite from "./src/screens/GroupChannelInvite";
 import List from "./src/screens/List";
 import firebase from 'firebase';
 
-const MenuStack = StackNavigator({
-  Menu: {screen: Menu},
-  OpenChannel: { screen: OpenChannel },
-  OpenChannelCreate: { screen: OpenChannelCreate },
-  Chat: { screen: Chat },
-  Member: { screen: Member },
-  BlockUser: { screen: BlockUser },
-  GroupChannel: { screen: GroupChannel },
-  GroupChannelInvite: { screen: GroupChannelInvite },
-},{
-  initialRouteName: 'Menu',
-  headerMode: 'none'
-})
-
-const Tabs = TabNavigator({
-    Profile: {screen: Profile},
-    ChatStack : {screen: MenuStack},
-    List : {screen: List},
-},{
-  order: ['Profile', 'List', 'ChatStack' ],
-}
-)
-
 const MainNavigator = StackNavigator(
   {
-    Start: { screen: Start },
-    Login: { screen: Login },
-    Menu: { screen: Tabs },
-  },
-  {
+    Start:{ screen:Start },
+    Login:{ screen:Login },
+
+    mainFlow:{
+      screen: TabNavigator({
+        Profile: { screen: Profile },
+        List: { screen: List },
+        MenuStack: { screen: StackNavigator({
+          Menu: {screen: Menu},
+          OpenChannel: { screen: OpenChannel },
+          OpenChannelCreate: { screen: OpenChannelCreate },
+          Chat: { screen: Chat },
+          Member: { screen: Member },
+          BlockUser: { screen: BlockUser },
+          GroupChannel: { screen: GroupChannel },
+          GroupChannelInvite: { screen: GroupChannelInvite },
+        },{
+          initialRouteName: 'Menu',
+          headerMode: 'none'
+        })}
+      },{
+        initialRouteName: 'Profile'
+      })
+    }
+  },{
     initialRouteName: 'Start',
   }
-);
+)
 let sb = null;
 
 function showLocalNotificationWithAction(notif) {

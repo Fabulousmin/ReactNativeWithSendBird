@@ -18,70 +18,62 @@ class Start extends Component {
         };
     }
 
-    componentWillMount() {
-
+    componentDidMount() {
       firebase.auth().onAuthStateChanged((user) => {
         if(user) {
-          this.setState({ loggedIn: true });
+          {AsyncStorage.getItem("user", (err, result) => {
+              if(result) {
+                  this.setState({ isLoading: true }, () => {
+                      const user = JSON.parse(result);
+                      sbConnect(user.userId)
+                          .then(() => {
+                              this.setState({ isLoading: false }, () => {
+                                  AsyncStorage.getItem("payload", (err, result) => {
+                                      if(result) {
+                                          const notif = JSON.parse(result);
+                                          const isOpenChannel = () => {
+                                              return notif.channelType !== "group_messaging"
+                                                  && notif.channelType !== "messaging";
+                                          };
+                                          const channelType = isOpenChannel() ? "OpenChannel" : "GroupChannel";
+                                          this.props.navigation.dispatch(NavigationActions.reset({
+                                              index : 3,
+                                              actions : [
+                                                  NavigationActions.navigate({ routeName : "mainFlow" }),
+                                                  NavigationActions.navigate({ routeName : "MenuStack" }),
+                                                  NavigationActions.navigate({ routeName : channelType }),
+                                                  NavigationActions.navigate({ routeName : "Chat", params : {
+                                                          channelUrl: notif.channel.channel_url,
+                                                          title: notif.channel.name,
+                                                          isOpenChannel : isOpenChannel(),
+                                                          isFromPayload : true
+                                                      }
+                                                  })
+                                              ]
+                                          }));
+                                      }
+                                      else this.redirectTo("mainFlow");
+                                  });
+                              });
+                          })
+                          .catch((err) => {
+                              this.setState({ isLoading: false }, () => {
+                                  this.redirectTo("Login");
+                              });
+                          });
+                  });
+              }
+              else this.redirectTo("Login");
+          })}
         }
         else{
-          this.setState({ loggedIn: false });
+          this.redirectTo("Login")
             }
         }
       );
-
     }
 
-    componentDidMount() {
-      if(this.state.loggedIn){
-        AsyncStorage.getItem("user", (err, result) => {
-            if(result) {
-                this.setState({ isLoading: true }, () => {
-                    const user = JSON.parse(result);
-                    sbConnect(user.userId)
-                        .then(() => {
-                            this.setState({ isLoading: false }, () => {
-                                AsyncStorage.getItem("payload", (err, result) => {
-                                    if(result) {
-                                        const notif = JSON.parse(result);
-                                        const isOpenChannel = () => {
-                                            return notif.channelType !== "group_messaging"
-                                                && notif.channelType !== "messaging";
-                                        };
-                                        const channelType = isOpenChannel() ? "OpenChannel" : "GroupChannel";
-                                        this.props.navigation.dispatch(NavigationActions.reset({
-                                            index : 2,
-                                            actions : [
-                                                NavigationActions.navigate({ routeName : "Menu" }),
-                                                NavigationActions.navigate({ routeName : channelType }),
-                                                NavigationActions.navigate({ routeName : "Chat", params : {
-                                                        channelUrl: notif.channel.channel_url,
-                                                        title: notif.channel.name,
-                                                        isOpenChannel : isOpenChannel(),
-                                                        isFromPayload : true
-                                                    }
-                                                })
-                                            ]
-                                        }));
-                                    }
-                                    else this.redirectTo("Menu");
-                                });
-                            });
-                        })
-                        .catch((err) => {
-                            this.setState({ isLoading: false }, () => {
-                                this.redirectTo("Login");
-                            });
-                        });
-                });
-            }
-            else this.redirectTo("Login");
-        });
-    }
-    else{
-      this.redirectTo("Login");
-    }
-  }
+
 
 
     redirectTo(page, params) {

@@ -18,9 +18,7 @@ export const sendbirdLogout = () => {
 
 export const fbLogOut = () => {
   return (dispatch) => {
-    return (dispatch) => {
       firebase.auth().signOut()
-      .then(() => dispatch({type: DISCONNECT_SUCCESS}) );
+      .then(() => dispatch({type: DISCONNECT_SUCCESS}));
     }
   }
-}

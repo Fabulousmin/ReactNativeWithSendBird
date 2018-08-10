@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
-import { sendbirdLogout, initMenu } from '../actions';
+import { sendbirdLogout, initMenu, fbLogOut } from '../actions';
 import {
     sbUnregisterPushToken
   } from '../sendbirdActions';
@@ -29,10 +29,12 @@ class Menu extends Component {
             if(!result) {
                 const resetAction = NavigationActions.reset({
                     index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Login' })
+                    actions:[
+                      NavigationActions.navigate({
+                        routeName: 'Login'
+                      })
                     ]
-                })
+                  })
                 this.props.navigation.dispatch(resetAction);
             }
         });
@@ -54,6 +56,7 @@ class Menu extends Component {
         this.setState({ isLoading: true }, () => {
             sbUnregisterPushToken()
                 .then(res => {
+                    this.props.fbLogOut();
                     this.props.sendbirdLogout();
                 })
                 .catch(err => {});
@@ -115,7 +118,7 @@ function mapStateToProps({ menu }) {
     return { isDisconnected };
 };
 
-export default connect(mapStateToProps, { sendbirdLogout, initMenu })(Menu);
+export default connect(mapStateToProps, { sendbirdLogout, initMenu, fbLogOut })(Menu);
 
 const styles = {
     containerViewStyle: {
