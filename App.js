@@ -39,10 +39,22 @@ import firebase from 'firebase';
 const MainNavigator = SwitchNavigator(
   {
        Start:{ screen:Start },
-       Login: { screen:Login },
-        Main: TabNavigator({
-        Profile: { screen: Profile },
+
+       LoginStack: StackNavigator({
+          Login: { screen:Login }},{
+            initialRouteName: 'Login'
+          }),
+
+      Main: TabNavigator({
+        ProfileStack: StackNavigator({
+          Profile: { screen: Profile }
+        },
+          {
+            initialRouteName: 'Profile'
+          }),
+
         List: { screen: List },
+
         MenuStack:  StackNavigator({
           Menu: {screen: Menu},
           OpenChannel: { screen: OpenChannel },
@@ -57,7 +69,7 @@ const MainNavigator = SwitchNavigator(
         })
       },
       {
-        initialRouteName: 'Profile'
+        initialRouteName: 'ProfileStack'
       })
     }
   ,{

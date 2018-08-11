@@ -58,16 +58,16 @@ class Start extends Component {
                           })
                           .catch((err) => {
                               this.setState({ isLoading: false }, () => {
-                                  this.redirectTo("Login");
+                                  this.redirectTo("LoginStack");
                               });
                           });
                   });
               }
-              else this.props.navigation.navigate('Login');
+              else this.props.navigation.navigate('LoginStack');
           })}
         }
         else{
-          this.props.navigation.navigate('Login');
+          this.props.navigation.navigate('LoginStack');
             }
         }
       );
