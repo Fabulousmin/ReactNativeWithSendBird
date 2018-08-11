@@ -25,20 +25,15 @@ class Menu extends Component {
     }
 
     componentWillReceiveProps(props) {
-        AsyncStorage.getItem("user", (err, result) => {
-            if(!result) {
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions:[
-                      NavigationActions.navigate({
-                        routeName: 'Login'
-                      })
-                    ]
-                  })
-                this.props.navigation.dispatch(resetAction);
-            }
-        });
-    }
+      AsyncStorage.getItem("user", (err, result) => {
+            if(!result){
+            this.props.navigation.navigate('Start');
+          }
+        }
+      )
+        }
+
+
 
     _onProfileButtonPress = () => {
         this.props.navigation.navigate('Profile');

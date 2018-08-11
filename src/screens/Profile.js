@@ -24,6 +24,7 @@ import {
     Spinner
 } from '../components';
 import ImagePicker from 'react-native-image-picker';
+import firebase from 'firebase';
 const { width, height } = Dimensions.get('window');
 const pickerOptions = {
   title: '프로필 사진 변경',

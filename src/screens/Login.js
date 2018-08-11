@@ -37,15 +37,7 @@ class Login extends Component {
                         .then(res => {})
                         .catch(err => {});
                 }
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'mainFlow' })
-                    ]
-                });
-                this.setState({ userId: '', isLoading: false }, () => {
-                    this.props.navigation.dispatch(resetAction);
-                });
+                this.props.navigation.navigate('Main');
             });
         }
         if (error) {

@@ -83,13 +83,14 @@ export const fbGetCurrentUserInfo = (dispatch) => {
       fbSuccessGetUserInfo(dispatch, userInfo);
       }
     )
-    .catch( error => {
+    .catch( () => {
+      const error = 'fail to load profile'
       fbFailGetUserInfo(dispatch, error);
       }
     )
   }
   else {
-      const error = {message:'fail to get userinfo'};
+      const error = 'fail to get userinfo';
       fbFailGetUserInfo(dispatch, error);
   }
   }

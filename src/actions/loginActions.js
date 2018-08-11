@@ -35,7 +35,7 @@ export const sendbirdLogin = ({ userId, password }) => {
 
         .catch((error) => loginFail(dispatch, error.message) );
       })
-        .catch((error) => { loginFail(dispatch, error.message)});
+        .catch((error) => loginFail(dispatch, error.message) );
       });
     }
 }

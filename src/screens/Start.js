@@ -39,7 +39,7 @@ class Start extends Component {
                                           this.props.navigation.dispatch(NavigationActions.reset({
                                               index : 3,
                                               actions : [
-                                                  NavigationActions.navigate({ routeName : "mainFlow" }),
+                                                  NavigationActions.navigate({ routeName : "Main" }),
                                                   NavigationActions.navigate({ routeName : "MenuStack" }),
                                                   NavigationActions.navigate({ routeName : channelType }),
                                                   NavigationActions.navigate({ routeName : "Chat", params : {
@@ -52,7 +52,7 @@ class Start extends Component {
                                               ]
                                           }));
                                       }
-                                      else this.redirectTo("mainFlow");
+                                      else this.props.navigation.navigate('Main')
                                   });
                               });
                           })
@@ -63,11 +63,11 @@ class Start extends Component {
                           });
                   });
               }
-              else this.redirectTo("Login");
+              else this.props.navigation.navigate('Login');
           })}
         }
         else{
-          this.redirectTo("Login")
+          this.props.navigation.navigate('Login');
             }
         }
       );
@@ -84,6 +84,8 @@ class Start extends Component {
             ]
         }));
     }
+
+
 
 
     render() {

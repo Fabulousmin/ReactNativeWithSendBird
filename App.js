@@ -7,7 +7,7 @@ import {
   View
 } from "react-native";
 import { Spinner } from './src/components'
-import { StackNavigator, TabNavigator } from "react-navigation";
+import { StackNavigator, TabNavigator, SwitchNavigator } from "react-navigation";
 import { Provider } from "react-redux";
 import FCM, {
   FCMEvent,
@@ -36,16 +36,14 @@ import GroupChannelInvite from "./src/screens/GroupChannelInvite";
 import List from "./src/screens/List";
 import firebase from 'firebase';
 
-const MainNavigator = StackNavigator(
+const MainNavigator = SwitchNavigator(
   {
-    Start:{ screen:Start },
-    Login:{ screen:Login },
-
-    mainFlow:{
-      screen: TabNavigator({
+       Start:{ screen:Start },
+       Login: { screen:Login },
+        Main: TabNavigator({
         Profile: { screen: Profile },
         List: { screen: List },
-        MenuStack: { screen: StackNavigator({
+        MenuStack:  StackNavigator({
           Menu: {screen: Menu},
           OpenChannel: { screen: OpenChannel },
           OpenChannelCreate: { screen: OpenChannelCreate },
@@ -56,16 +54,17 @@ const MainNavigator = StackNavigator(
           GroupChannelInvite: { screen: GroupChannelInvite },
         },{
           initialRouteName: 'Menu',
-          headerMode: 'none'
-        })}
-      },{
+        })
+      },
+      {
         initialRouteName: 'Profile'
       })
     }
-  },{
-    initialRouteName: 'Start',
+  ,{
+    initialRouteName: 'Start'
   }
-)
+);
+
 let sb = null;
 
 function showLocalNotificationWithAction(notif) {
