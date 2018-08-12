@@ -28,7 +28,7 @@ export default (state = INITIAL_STATE, action) => {
         case SUCCESS_GET_USERINFO:
             return { ...state, userInfo: action.payload };
         case FAIL_GET_USERINFO:
-            return { ...state, error: action.error, };
+            return { ...state, error: action.error };
         default:
             return state;
     }

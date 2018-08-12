@@ -88,6 +88,7 @@ class Profile extends Component {
                    number: number,
                     isLoading: false});
         }
+        this.setState( {isLoading: false} );
         if (isSaved) {
             this.props.navigation.goBack();
         }

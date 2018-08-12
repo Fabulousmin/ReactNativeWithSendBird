@@ -7,8 +7,8 @@ import {
 import { NavigationActions } from 'react-navigation';
 import { Spinner } from '../components';
 import { Container, Header, Content, Button, Icon, Text, Input, Form, Item, Label  } from 'native-base';
-import { initLogin, sendbirdLogin  } from '../actions'
-
+import { initLogin, sendbirdLogin, kakaoLogin  } from '../actions'
+import NativeButton from 'apsl-react-native-button';
 
 class Login extends Component {
     static navigationOptions = {
@@ -58,6 +58,12 @@ class Login extends Component {
         this.setState({ isLoading: true }, () => {
             this.props.sendbirdLogin({ userId, password });
         });
+    }
+
+    _onKakaoButtonPress = () => {
+      this.setState({ isLoading: true } , () =>{
+        this.props.kakaoLogin();
+      });
     }
 
 
@@ -133,7 +139,12 @@ class Login extends Component {
                         <Text>페이스북으로 로그인</Text>
                       </Button>
 
-                      <Button warning iconLeft block>
+                      <Button
+                        warning
+                        iconLeft
+                        block
+                        onPress={this._onKakaoButtonPress.bind(this)}
+                        >
                         <Icon name='home' />
                         <Text>카카오톡으로 로그인</Text>
                       </Button>
@@ -154,7 +165,7 @@ function mapStateToProps({ login }) {
     return { error, user };
 };
 
-export default connect(mapStateToProps, { initLogin, sendbirdLogin })(Login);
+export default connect(mapStateToProps, { initLogin, sendbirdLogin, kakaoLogin })(Login);
 
 const styles = {
     containerStyle: {

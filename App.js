@@ -126,11 +126,9 @@ export default class App extends Component {
    databaseURL: 'https://subyeon-8d8cc.firebaseio.com',
    projectId: 'subyeon-8d8cc',
    storageBucket: '',
-   messagingSenderId: '448958311557'
+   messagingSenderId: '448958311557',
  };
- firebase.initializeApp(config);
-
-
+  firebase.initializeApp(config);
 }
 
 
