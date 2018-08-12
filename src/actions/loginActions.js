@@ -25,6 +25,7 @@ export const sendbirdLogin = ({ userId, password }) => {
         console.log(error);
         firebase.auth().createUserWithEmailAndPassword(userId, password)
         .then( () => {
+        fbInitUserInfo();
         console.log('user created');
         firebase.auth().signInWithEmailAndPassword(userId, password)
         .then(() => {
@@ -95,15 +96,10 @@ const loginSuccess = (dispatch, user) => {
 
 const fbInitUserInfo = () => {
     const database = firebase.database();
-    const userInfo = {
-    profileUrl: '',
-    nickname: '',
-    selfIntro: '',
-    sex: '',
-    city: '',
-    number: ''
-  };
   const uid = firebase.auth().currentUser.uid;
+  const userInfo = {
+  uid: uid
+};
   if(uid) {
     database.ref('users/'+ uid).set(userInfo)
     .then(() => console.log('success init userInfo'))

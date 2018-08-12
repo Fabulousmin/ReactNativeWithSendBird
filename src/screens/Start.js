@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View, AsyncStorage, Image, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import firebase from 'firebase';
@@ -8,6 +8,8 @@ import {
     sbGetChannelTitle
 } from '../sendbirdActions';
 import { Spinner } from '../components';
+
+const { width , height } = Dimensions.get('window');
 
 class Start extends Component {
     constructor(props) {
@@ -91,6 +93,7 @@ class Start extends Component {
     render() {
         return (
             <View style={styles.containerStyle}>
+                <Image source={{uri:'./img/loading.png'}} style={{width: width, height: height }}/>
                 <Spinner visible={this.state.isLoading} />
             </View>
         );

@@ -49,13 +49,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -90,21 +90,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <!-- 공통 -->
-    <string>kakaof2a0ffa1c9ea07a1ba2b5b8a04cd55d8</string>
-    
-    <!-- 간편로그인 -->
-    <string>kakaokompassauth</string>
-    <string>storykompassauth</string>
-    
-    <!-- 카카오톡링크 -->
-    <string>kakaolink</string>
-    <string>kakaotalk-5.9.7</string>
-    
-    <!-- 카카오스토리링크 -->
-    <string>storylink</string>
-  </array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaof2a0ffa1c9ea07a1ba2b5b8a04cd55d8</string>
+		<string>kakaokompassauth</string>
+		<string>storykompassauth</string>
+		<string>kakaolink</string>
+		<string>kakaotalk-5.9.7</string>
+		<string>storylink</string>
+	</array>
 </dict>
 </plist>

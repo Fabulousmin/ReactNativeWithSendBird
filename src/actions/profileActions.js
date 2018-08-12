@@ -9,6 +9,7 @@ import {
 } from './types';
 import { sbGetCurrentInfo, sbUpdateProfile } from '../sendbirdActions';
 import firebase from 'firebase';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 export const initProfile = () => {
     return { type: INIT_PROFILE }
