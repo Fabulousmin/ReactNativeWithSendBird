@@ -29,7 +29,6 @@ export const sendbirdLogin = ({ userId, password }) => {
         firebase.auth().signInWithEmailAndPassword(userId, password)
         .then(() => {
         console.log('user loggedIn');
-        fbInitUserInfo();
         sbConnect(userId)
         .then( (user) => loginSuccess(dispatch, user) )
         .catch( (error) => loginFail(dispatch, error) );} )
