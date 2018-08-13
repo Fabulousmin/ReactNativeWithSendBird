@@ -49,12 +49,12 @@ class Menu extends Component {
 
     _onDisconnectButtonPress = () => {
         this.setState({ isLoading: true }, () => {
-            // sbUnregisterPushToken()
-            //     .then(res => {
+            sbUnregisterPushToken()
+                .then(res => {
                     this.props.fbLogOut();
                     this.props.sendbirdLogout();
-                // })
-                // .catch(err => {});
+                })
+               .catch(err => {});
         });
     }
 

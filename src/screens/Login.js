@@ -130,15 +130,6 @@ class Login extends Component {
                         <Text>로그인</Text>
                       </Button>
 
-
-                      <Button
-                        iconLeft
-                        block
-                        >
-                        <Icon name='home' />
-                        <Text>페이스북으로 로그인</Text>
-                      </Button>
-
                       <Button
                         warning
                         iconLeft

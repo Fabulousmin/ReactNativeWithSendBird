@@ -44,33 +44,38 @@ const updateSuccess = (dispatch, user) => {
     });
 }
 
-export const fbProfileUpdate = ({ profileUrl, nickname, selfIntro, sex, city, number}) =>{
+export const fbProfileUpdate = ({ profileImgData, nickname, selfIntro, sex, city, number}) =>{
  return (dispatch) => {
    const database = firebase.database();
-   const userInfo = {
-    profileUrl: profileUrl,
-    nickname: nickname,
-    selfIntro: selfIntro,
-    sex: sex,
-    city: city,
-    number: number
-   };
    const uid = firebase.auth().currentUser.uid;
-   if(uid){
-     database.ref('users/'+ uid).set(userInfo)
-    .then(() => {
-    console.log('user info updated');
-    }
-  )
-    .catch(error => {
-    console.log('fail to get userinfo');
-    updateFail(dispatch, error);})
-  }
-  else {
-    console.log('fail to get uid');
+   fbImageUpload( profileImgData )
+   .then(()=>{
+     fbGetProfileImgUrl(uid)
+     .then((profileUrl)=> {
+       const userInfo = {
+        profileUrl: profileUrl,
+        nickname: nickname,
+        selfIntro: selfIntro,
+        sex: sex,
+        city: city,
+        number: number
+       };
+       database.ref('users/'+ uid).set(userInfo)
+       .then(() => {
+       fbSuccessGetUserInfo(dispatch, userInfo);
+       console.log('user info updated');
+       }
+       )
+       .catch(error => {
+       console.log('fail to update userinfo' + error);
+       updateFail(dispatch, error);})
+     })
+   })
+  .catch( () => {
     updateFail(dispatch, error);
+    console.log('fail upload image');
+  })
   }
-}
 }
 
 export const fbGetCurrentUserInfo = (dispatch) => {
@@ -112,20 +117,40 @@ const fbFailGetUserInfo = (dispatch, error) => {
   })
 }
 
-export const fbImageUpload = (profileImg) => {
-  return (dispatch) => {
+const fbImageUpload = (profileImgData) => {
+  return new Promise ((resolve, reject) => {
+    const uid = firebase.auth().currentUser.uid;
     const storageRef = firebase.storage().ref();
-    const profileImgRef = storageRef.child('profileImg.jpg');
-    const profileImagesRef = storageRef.child ('images/profileImg.jpg');
+    const profileImagesRef = storageRef.child ( 'users/'+ uid +'/images/profileImg.jpg');
     const metadata = {
-      contentType: 'image/jpg'
+      contentType: 'image/jpeg'
     }
-    const { data, uri } = profileImg;
-    var message = data;
-    profileImagesRef.putString(message, 'base64')
-    .then(function(snapshot) {
+    const message = profileImgData;
+    profileImagesRef.putString(message, 'base64', metadata)
+    .then( snapshot => {
       console.log('Uploaded a base64url string!');
+      resolve();
     })
-    .catch(err => console.log(err));
-  }
+    .catch( error => {
+      console.log(err);
+      reject();
+    });
+  })
+}
+
+const fbGetProfileImgUrl = ( uid ) => {
+  return new Promise ((resolve, reject) => {
+    const storage = firebase.storage();
+    const storageRef = storage.ref( 'users/'+ uid+'/' );
+    const profileRef = storageRef.child('images/profileImg.jpg');
+    profileRef.getDownloadURL()
+    .then(url => {
+      console.log('get url success url:' + url);
+      resolve(url);
+    })
+    .catch(err => {
+      console.log('fail to get url' + err );
+      reject();
+    });
+  })
 }

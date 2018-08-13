@@ -50,7 +50,8 @@ export const kakaoLogin = () => {
         console.log(err);
         return;
       }
-      const token = result.slice(8, 62);
+      result = JSON.parse(result);
+      const token = result.token;
       axios.post('http://13.125.213.67:8000/verifyToken', {
           token: token
       })

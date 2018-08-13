@@ -6,7 +6,6 @@ import { initProfile,
     updateProfile,
     fbProfileUpdate,
     fbGetCurrentUserInfo,
-    fbImageUpload,
     } from '../actions';
 import { Content,
    Form,
@@ -62,6 +61,7 @@ class Profile extends Component {
         this.state = {
             isLoading: false,
             profileUrl: '',
+            profileImgData: '',
             nickname: '',
             selfIntro: '',
             sex: "",
@@ -99,8 +99,8 @@ class Profile extends Component {
 
 
     _onSaveButtonPress = () => {
-      const { profileUrl, nickname, selfIntro, sex, city, number } = this.state;
-      const profileInfo = { profileUrl, nickname, selfIntro, sex, city, number };
+      const { profileImgData, nickname, selfIntro, sex, city, number } = this.state;
+      const profileInfo = { profileImgData, nickname, selfIntro, sex, city, number };
         this.props.updateProfile(this.state.nickname);
         this.props.fbProfileUpdate(profileInfo);
         this.props.fbGetCurrentUserInfo();
@@ -147,13 +147,12 @@ class Profile extends Component {
     console.log('User tapped custom button: ', response.customButton);
   }
   else {
-    let source =response.uri;
-    // You can also display the image using data:
-    // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+    // const source = { uri: 'data:image/jpeg;base64,' + response.data };
     this.setState({
-      profileUrl: source
+      profileUrl: response.uri ,
+      profileImgData: response.data
     });
-    this.props.fbImageUpload(response);
+
   }
 });
     }
@@ -165,7 +164,7 @@ class Profile extends Component {
 
                 <Content>
                     <ImageBackground
-                      source={this.state.profileUrl ? () => {uri:this.state.profileUrl} : require('../img/default.png')}
+                      source={this.state.profileUrl ? {uri:this.state.profileUrl} : require('../img/default.png')}
                       style={{width:width, height: width-100, flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end'}}
                     >
                     <View
@@ -277,5 +276,4 @@ function mapStateToProps({ profile }) {
 
 export default connect(
     mapStateToProps,
-    { initProfile, getCurrentUserInfo, updateProfile, fbProfileUpdate, fbGetCurrentUserInfo, fbImageUpload }
-)(Profile);
+    { initProfile, getCurrentUserInfo, updateProfile, fbProfileUpdate, fbGetCurrentUserInfo})(Profile);
