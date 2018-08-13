@@ -7,10 +7,10 @@ import {
     FAIL_GET_USERINFO,
     SUCCESS_GET_USERINFO,
 } from './types';
+import { Platform } from 'react-native';
 import { sbGetCurrentInfo, sbUpdateProfile } from '../sendbirdActions';
 import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
-
 export const initProfile = () => {
     return { type: INIT_PROFILE }
 }
@@ -110,4 +110,22 @@ const fbFailGetUserInfo = (dispatch, error) => {
     type: FAIL_GET_USERINFO,
     payload: error.message
   })
+}
+
+export const fbImageUpload = (profileImg) => {
+  return (dispatch) => {
+    const storageRef = firebase.storage().ref();
+    const profileImgRef = storageRef.child('profileImg.jpg');
+    const profileImagesRef = storageRef.child ('images/profileImg.jpg');
+    const metadata = {
+      contentType: 'image/jpg'
+    }
+    const { data, uri } = profileImg;
+    var message = data;
+    profileImagesRef.putString(message, 'base64')
+    .then(function(snapshot) {
+      console.log('Uploaded a base64url string!');
+    })
+    .catch(err => console.log(err));
+  }
 }

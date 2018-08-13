@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage, Image, Dimensions } from 'react-native';
+import { View, AsyncStorage, ImageBackground, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import firebase from 'firebase';
@@ -93,8 +93,13 @@ class Start extends Component {
     render() {
         return (
             <View style={styles.containerStyle}>
-                <Image source={{uri:'./img/loading.png'}} style={{width: width, height: height }}/>
                 <Spinner visible={this.state.isLoading} />
+                <ImageBackground source={require('../img/loading.png')}
+                style={{
+                  width: 150,
+                  height: 150,
+                  alignSelf: 'center'
+                }}/>
             </View>
         );
     }
@@ -109,7 +114,8 @@ export default connect(mapStateToProps, {})(Start);
 
 const styles = {
     containerStyle: {
-        backgroundColor: '#fff',
-        flex: 1
+        backgroundColor: '#74b9ff',
+        flex: 1,
+        justifyContent:'center'
     }
 }

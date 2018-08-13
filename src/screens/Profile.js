@@ -6,6 +6,7 @@ import { initProfile,
     updateProfile,
     fbProfileUpdate,
     fbGetCurrentUserInfo,
+    fbImageUpload,
     } from '../actions';
 import { Content,
    Form,
@@ -32,8 +33,10 @@ const pickerOptions = {
   ],
   storageOptions: {
     skipBackup: true,
-    path: 'images'
-  }
+    path: 'subyeon/images',
+  },
+  quility: 0.5,
+  allowsEditing: true,
 };
 
 class Profile extends Component {
@@ -150,6 +153,7 @@ class Profile extends Component {
     this.setState({
       profileUrl: source
     });
+    this.props.fbImageUpload(response);
   }
 });
     }
@@ -161,7 +165,7 @@ class Profile extends Component {
 
                 <Content>
                     <ImageBackground
-                      source={this.state.profileUrl ? {uri: this.state.profileUrl} : {uri: '../img/default.png'}}
+                      source={this.state.profileUrl ? () => {uri:this.state.profileUrl} : require('../img/default.png')}
                       style={{width:width, height: width-100, flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end'}}
                     >
                     <View
@@ -273,5 +277,5 @@ function mapStateToProps({ profile }) {
 
 export default connect(
     mapStateToProps,
-    { initProfile, getCurrentUserInfo, updateProfile, fbProfileUpdate, fbGetCurrentUserInfo }
+    { initProfile, getCurrentUserInfo, updateProfile, fbProfileUpdate, fbGetCurrentUserInfo, fbImageUpload }
 )(Profile);

@@ -125,7 +125,7 @@ export default class App extends Component {
    authDomain: 'subyeon-8d8cc.firebaseapp.com',
    databaseURL: 'https://subyeon-8d8cc.firebaseio.com',
    projectId: 'subyeon-8d8cc',
-   storageBucket: '',
+   storageBucket: 'gs://subyeon-8d8cc.appspot.com',
    messagingSenderId: '448958311557',
  };
   firebase.initializeApp(config);

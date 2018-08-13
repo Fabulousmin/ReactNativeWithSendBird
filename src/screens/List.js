@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
   View,
@@ -6,26 +5,26 @@ import {
   StyleSheet,
   FlatList
 } from 'react-native';
-import { randomUser } from '../randomUser';
+import { UserList } from '../UserList';
 import { CardImage } from '../components';
 export default class List extends Component {
 
   state = {
       refreshing:false,
-      data: randomUser(5),
+      data: UserList(5),
     }
     onEndReached = () => {
      this.setState(state => ({
        data: [
          ...state.data,
-         ...randomUser(),
+         ...UserList(),
        ]
      }));
    };
 
    onRefresh = () => {
      this.setState({
-       data: randomUser(5),
+       data: UserList(5),
      });
    }
 
@@ -41,9 +40,7 @@ export default class List extends Component {
          renderItem={({ item }) => {
            return (
              <CardImage
-               source={{uri:item.avatar}}
-               nickname={item.name}
-               age={item.age}
+               nickname={item.nickname}
                city={item.city}
                sex={item.sex}
                number={item.number}
