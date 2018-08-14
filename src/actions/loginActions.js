@@ -4,9 +4,10 @@ import {
     LOGIN_FAIL
 } from './types';
 import { sbConnect } from '../sendbirdActions';
-import firebase from 'firebase';
 import RNKakaoLogins from 'react-native-kakao-logins';
 import axios from 'axios';
+
+const firebase = require('firebase');
 
 export const initLogin = () => {
     return { type: INIT_LOGIN };

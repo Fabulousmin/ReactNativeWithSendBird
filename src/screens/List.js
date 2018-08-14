@@ -46,6 +46,7 @@ export default class List extends Component {
                sex={item.sex}
                number={item.number}
                selfIntro={item.selfIntro}
+               age={item.age}
              />
            );
          }}

@@ -7,10 +7,9 @@ import {
     FAIL_GET_USERINFO,
     SUCCESS_GET_USERINFO,
 } from './types';
-import { Platform } from 'react-native';
 import { sbGetCurrentInfo, sbUpdateProfile } from '../sendbirdActions';
-import firebase from 'firebase';
-import RNFetchBlob from 'react-native-fetch-blob';
+
+const firebase = require('firebase');
 export const initProfile = () => {
     return { type: INIT_PROFILE }
 }
@@ -44,7 +43,7 @@ const updateSuccess = (dispatch, user) => {
     });
 }
 
-export const fbProfileUpdate = ({ profileImgData, nickname, selfIntro, sex, city, number}) =>{
+export const fbProfileUpdate = ({ profileImgData, nickname, selfIntro, age, sex, city, number}) =>{
  return (dispatch) => {
    const database = firebase.database();
    const uid = firebase.auth().currentUser.uid;
@@ -53,9 +52,11 @@ export const fbProfileUpdate = ({ profileImgData, nickname, selfIntro, sex, city
      fbGetProfileImgUrl(uid)
      .then((profileUrl)=> {
        const userInfo = {
+        uid: uid,
         profileUrl: profileUrl,
         nickname: nickname,
         selfIntro: selfIntro,
+        age: age,
         sex: sex,
         city: city,
         number: number

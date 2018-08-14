@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { View, AsyncStorage, ImageBackground, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import firebase from 'firebase';
 import {
     sbConnect,
     sbGetChannelTitle
 } from '../sendbirdActions';
 import { Spinner } from '../components';
 
-const { width , height } = Dimensions.get('window');
 
+const { width , height } = Dimensions.get('window');
+const firebase = require('firebase');
 class Start extends Component {
     constructor(props) {
         super(props);

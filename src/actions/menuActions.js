@@ -3,7 +3,8 @@ import {
     DISCONNECT_SUCCESS
 } from './types';
 import { sbDisconnect } from '../sendbirdActions';
-import firebase from 'firebase';
+
+const firebase = require('firebase');
 
 export const initMenu = () => {
     return { type: INIT_MENU };

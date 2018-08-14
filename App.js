@@ -14,7 +14,6 @@ import FCM, {
   RemoteNotificationResult,
   WillPresentNotificationResult
 } from 'react-native-fcm';
-import firebase from 'firebase';
 import SendBird from 'sendbird';
 import {
   sbRegisterPushToken
@@ -110,8 +109,8 @@ export default class App extends Component {
 
 
 
-
-  componentWillMount(){
+  initializeFirebase(){
+    const firebase = require('firebase');
     const config = {
    apiKey: 'AIzaSyDFK3nd6dauk2gRkb90gqLDSW5lh0mY3tQ',
    authDomain: 'subyeon-8d8cc.firebaseapp.com',
@@ -119,12 +118,13 @@ export default class App extends Component {
    projectId: 'subyeon-8d8cc',
    storageBucket: 'gs://subyeon-8d8cc.appspot.com',
    messagingSenderId: '448958311557',
- };
-  firebase.initializeApp(config);
-}
+  };
+    firebase.initializeApp(config);
+  }
 
-
-
+  componentWillMount(){
+      this.initializeFirebase();
+  }
 
   componentDidMount() {
     console.disableYellowBox = true;

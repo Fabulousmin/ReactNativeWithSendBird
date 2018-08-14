@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { View, ImageBackground, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { initProfile,
-    getCurrentUserInfo,
-    updateProfile,
-    fbProfileUpdate,
-    fbGetCurrentUserInfo,
-    } from '../actions';
+import ImagePicker from 'react-native-image-picker';
 import { Content,
    Form,
     Picker,
@@ -16,16 +11,18 @@ import { Content,
         Text,
          Input,
           Button } from 'native-base';
+import { initProfile,
+    getCurrentUserInfo,
+    updateProfile,
+    fbProfileUpdate,
+    fbGetCurrentUserInfo,
+    } from '../actions';
 import {
-    Avatar,
-    FormLabel,
-    FormInput,
-    FormValidationMessage,
     Spinner
 } from '../components';
-import ImagePicker from 'react-native-image-picker';
-import firebase from 'firebase';
-const { width, height } = Dimensions.get('window');
+
+const { width } = Dimensions.get('window');
+
 const pickerOptions = {
   title: '프로필 사진 변경',
   customButtons: [
@@ -39,7 +36,6 @@ const pickerOptions = {
 };
 
 class Profile extends Component {
-
     static navigationOptions = ({ navigation }) => {
         const { params } = navigation.state;
         return {
@@ -48,7 +44,7 @@ class Profile extends Component {
                 <Button
                     transparent
                     info
-                    onPress={ () => { params.handleSave() } }
+                    onPress={() => { params.handleSave() }}
                 >
                   <Text style={{color: 'blue'}}>save</Text>
                 </Button>
@@ -64,10 +60,11 @@ class Profile extends Component {
             profileImgData: '',
             nickname: '',
             selfIntro: '',
-            sex: "",
-            city: "",
-            number: ""
-        }
+            age: '',
+            sex: '',
+            city: '',
+            number: '',
+        };
     }
 
     componentDidMount() {
@@ -81,29 +78,21 @@ class Profile extends Component {
     componentWillReceiveProps(props) {
         const { userInfo, isSaved } = props;
         if (userInfo) {
-            const { profileUrl, nickname, selfIntro, sex, city, number } = userInfo;
+            const { profileUrl, nickname, selfIntro, age, sex, city, number } = userInfo;
             this.setState({
-              profileUrl: profileUrl,
-               nickname: nickname,
-                selfIntro: selfIntro,
-                 sex: sex,
-                  city: city,
-                   number: number,
-                    isLoading: false});
+              profileUrl,
+               nickname,
+                selfIntro,
+                 age,
+                 sex,
+                  city,
+                   number,
+                    isLoading: false });
         }
-        this.setState( {isLoading: false} );
+        this.setState({ isLoading: false });
         if (isSaved) {
             this.props.navigation.goBack();
         }
-    }
-
-
-    _onSaveButtonPress = () => {
-      const { profileImgData, nickname, selfIntro, sex, city, number } = this.state;
-      const profileInfo = { profileImgData, nickname, selfIntro, sex, city, number };
-        this.props.updateProfile(this.state.nickname);
-        this.props.fbProfileUpdate(profileInfo);
-        this.props.fbGetCurrentUserInfo();
     }
 
     onNicknameChanged(nickname) {
@@ -133,10 +122,24 @@ class Profile extends Component {
       number: value
     });
   }
-    _imagePick(){
-      ImagePicker.showImagePicker(pickerOptions, (response) => {
-  console.log('Response = ', response);
+    onAgeChanged(value: string) {
+      this.setState({
+     age: value
+  });
+}
 
+_onSaveButtonPress = () => {
+  const { profileImgData, nickname, selfIntro, age, sex, city, number } = this.state;
+  const profileInfo = { profileImgData, nickname, selfIntro, age, sex, city, number };
+    this.props.updateProfile(nickname);
+    this.props.fbProfileUpdate(profileInfo);
+    this.setState({ isLoading: true });
+    this.props.fbGetCurrentUserInfo();
+}
+
+_imagePick() {
+  ImagePicker.showImagePicker(pickerOptions, (response) => {
+  console.log('Response = ', response);
   if (response.didCancel) {
     console.log('User cancelled image picker');
   }
@@ -152,35 +155,32 @@ class Profile extends Component {
       profileUrl: response.uri ,
       profileImgData: response.data
     });
-
   }
 });
-    }
+  }
 
-    render() {
-        return (
-            <View style={styles.containerStyle}>
-                <Spinner visible={this.state.isLoading} />
-
-                <Content>
-                    <ImageBackground
-                      source={this.state.profileUrl ? {uri:this.state.profileUrl} : require('../img/default.png')}
-                      style={{width:width, height: width-100, flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end'}}
-                    >
-                    <View
-                      style={{marginRight: 20, marginBottom:20}}
-                      >
-                        <Button
-                          iconLeft
-                          info
-                          onPress={this._imagePick.bind(this)}
-                           >
-                        <Icon name='person'/>
-                        <Text>사진변경</Text>
-                      </Button>
-                    </View>
-                    </ImageBackground>
-
+render() {
+  return (
+    <View style={styles.containerStyle}>
+      <Spinner visible={this.state.isLoading} />
+      <Content>
+        <ImageBackground
+          source={this.state.profileUrl ? {uri:this.state.profileUrl} : require('../img/default.png')}
+         style={{width:width, height: 300, flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end'}}
+        >
+          <View
+           style={{marginRight: 20, marginBottom:20}}
+          >
+            <Button
+              iconLeft
+              info
+              onPress={this._imagePick.bind(this)}
+              >
+               <Icon name='person'/>
+               <Text>사진변경</Text>
+            </Button>
+          </View>
+        </ImageBackground>
                   <Form>
                     <Item stackedLabel>
                       <Label>닉네임</Label>
@@ -210,8 +210,27 @@ class Profile extends Component {
                       selectedValue={this.state.sex}
                       onValueChange={this.onSexChanged.bind(this)}
                     >
-                      <Picker.Item label="남" value="male" />
-                      <Picker.Item label="여" value="female" />
+                      <Picker.Item label="남" value="남" />
+                      <Picker.Item label="여" value="여" />
+                    </Picker>
+                    </Item>
+                    <Item inlineLabel>
+                    <Label>나이</Label>
+                    <Picker
+                      mode="dropdown"
+                      placeholder="연령대를 선택해 주세요"
+                      iosIcon={<Icon name="ios-arrow-down-outline" />}
+                      style={{ width: undefined }}
+                      placeholderStyle={{ color: "#bfc6ea" }}
+                      placeholderIconColor="#007aff"
+                      selectedValue={this.state.age}
+                      onValueChange={this.onAgeChanged.bind(this)}
+                    >
+                      <Picker.Item label="20대 초반" value="20대 초반" />
+                      <Picker.Item label="20대 중반" value="20대 중반" />
+                      <Picker.Item label="20대 후반" value="20대 후반" />
+                      <Picker.Item label="30대 초반" value="30대 초반" />
+                      <Picker.Item label="30대 중반" value="30대 후반" />
                     </Picker>
                     </Item>
                     <Item inlineLabel>
@@ -221,7 +240,7 @@ class Profile extends Component {
                       placeholder="거주지를 선택해 주세요"
                       iosIcon={<Icon name="ios-arrow-down-outline" />}
                       style={{ width: undefined }}
-                      placeholderStyle={{ color: "#bfc6ea" }}
+                      placeholderStyle={{ color: '#bfc6ea' }}
                       placeholderIconColor="#007aff"
                       selectedValue={this.state.city}
                       onValueChange={this.onCityChanged.bind(this)}
@@ -237,7 +256,7 @@ class Profile extends Component {
                       placeholder="동행 인원수를 선택해 주세요"
                       iosIcon={<Icon name="ios-arrow-down-outline" />}
                       style={{ width: undefined }}
-                      placeholderStyle={{ color: "#bfc6ea" }}
+                      placeholderStyle={{ color: '#bfc6ea' }}
                       placeholderIconColor="#007aff"
                       selectedValue={this.state.number}
                       onValueChange={this.onNumberChanged.bind(this)}
@@ -251,9 +270,8 @@ class Profile extends Component {
                     </Item>
                   </Form>
                 </Content>
-
             </View>
-        )
+        );
     }
 }
 
@@ -272,7 +290,7 @@ const styles = {
 function mapStateToProps({ profile }) {
     const { userInfo, error, isSaved } = profile;
     return { userInfo, error, isSaved };
-};
+}
 
 export default connect(
     mapStateToProps,

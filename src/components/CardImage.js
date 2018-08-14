@@ -10,7 +10,7 @@ const CardImage = ( props ) => {
                 <Thumbnail source={props.source} />
                 <Body>
                   <Text>{props.nickname}</Text>
-                  <Text note>{props.sex},{props.number}명,{props.age}살</Text>
+                  <Text note>{props.sex},{props.number}명,{props.age}</Text>
                 </Body>
               </Left>
             </CardItem>
