@@ -41,7 +41,7 @@ class Start extends Component {
                                           this.props.navigation.dispatch(NavigationActions.reset({
                                               index : 3,
                                               actions : [
-                                                  NavigationActions.navigate({ routeName : "Main" }),
+                                                  NavigationActions.navigate({ routeName : "ProfileInit" }),
                                                   NavigationActions.navigate({ routeName : "MenuStack" }),
                                                   NavigationActions.navigate({ routeName : channelType }),
                                                   NavigationActions.navigate({ routeName : "Chat", params : {
@@ -54,7 +54,7 @@ class Start extends Component {
                                               ]
                                           }));
                                       }
-                                      else this.props.navigation.navigate('Main')
+                                      else this.props.navigation.navigate('ProfileInit')
                                   });
                               });
                           })

@@ -36,7 +36,7 @@ class Login extends Component {
                         .then(res => {})
                         .catch(err => {});
                 }
-                this.props.navigation.navigate('Main');
+                this.props.navigation.navigate('ProfileInit');
             });
         }
         if (error) {

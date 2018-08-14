@@ -23,6 +23,12 @@ import Start from './src/screens/Start';
 import Login from './src/screens/Login';
 import Menu from './src/screens/Menu';
 import Profile from './src/screens/Profile';
+import ProfileInit1 from './src/screens/ProfileInit1';
+import ProfileInit2 from './src/screens/ProfileInit2';
+import ProfileInit3 from './src/screens/ProfileInit3';
+import ProfileInit4 from './src/screens/ProfileInit4';
+import ProfileInit5 from './src/screens/ProfileInit5';
+import ProfileInit6 from './src/screens/ProfileInit6';
 import OpenChannel from './src/screens/OpenChannel';
 import OpenChannelCreate from './src/screens/OpenChannelCreate';
 import Chat from './src/screens/Chat';
@@ -41,6 +47,17 @@ const MainNavigator = SwitchNavigator(
           , {
             initialRouteName: 'Login'
           }),
+      ProfileInit: StackNavigator(
+        { ProfileInit1 :{ screen: ProfileInit1 },
+          ProfileInit2 :{ screen: ProfileInit2 },
+          ProfileInit3 :{ screen: ProfileInit3 },
+          ProfileInit4 :{ screen: ProfileInit4 },
+          ProfileInit5 :{ screen: ProfileInit5 },
+          ProfileInit6 :{ screen: ProfileInit6 }
+        },
+        { initialRouteName: 'ProfileInit1',
+          headerMode: 'none'
+      }),
       Main: TabNavigator({
         ProfileStack: StackNavigator({
           Profile: { screen: Profile }

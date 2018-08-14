@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
   StyleSheet,
   FlatList
 } from 'react-native';
 import { UserList } from '../UserList';
 import { CardImage } from '../components';
+
 export default class List extends Component {
 
   state = {
-      refreshing:false,
+      refreshing: false,
       data: UserList(1),
     }
     onEndReached = () => {

@@ -10,9 +10,10 @@ import blockUser from './blockUserReducer';
 import groupChannel from './groupChannelReducer';
 import groupChannelInvite from './groupChannelInviteReducer';
 
+
 export default combineReducers({
-    login, menu, profile, 
-    openChannel, openChannelCreate, 
+    login, menu, profile,
+    openChannel, openChannelCreate,
     chat, member, blockUser,
     groupChannel, groupChannelInvite
 });
