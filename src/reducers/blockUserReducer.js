@@ -1,4 +1,4 @@
-import { 
+import {
     INIT_BLOCK_USER,
     BLOCK_LIST_SUCCESS,
     BLOCK_LIST_FAIL,
@@ -12,8 +12,8 @@ const INITAL_STATE = {
 }
 
 export default (state = INITAL_STATE, action) => {
-    switch(action.type) {
-        case INIT_BLOCK_USER: 
+    switch (action.type) {
+        case INIT_BLOCK_USER:
             return { ...state, ...INITAL_STATE };
         case BLOCK_LIST_SUCCESS:
             return { ...state, list: action.list };

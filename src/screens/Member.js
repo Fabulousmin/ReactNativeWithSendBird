@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, ListView, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { 
-    initMember, 
-    getParticipantList, 
-    getMemberList 
+import {
+    initMember,
+    getParticipantList,
+    getMemberList
 } from '../actions';
 import { Button, Spinner, ListItem, Avatar } from '../components';
 import { sbCreateParticipantListQuery } from '../sendbirdActions';
@@ -15,15 +15,18 @@ class Member extends Component {
         return {
             title: params.isOpenChannel ? 'Participants' : 'Members',
             headerLeft: (
-                <Button 
-                    containerViewStyle={{marginLeft: 0, marginRight: 0}}
-                    buttonStyle={{paddingLeft: 14}}
-                    icon={{ name: 'chevron-left', type: 'font-awesome', color: '#7d62d9', size: 18 }}
+                <Button
+                    containerViewStyle={{ marginLeft: 0, marginRight: 0 }}
+                    buttonStyle={{ paddingLeft: 14 }}
+                    icon={{ name: 'chevron-left',
+                    type: 'font-awesome',
+                    color: '#7d62d9',
+                    size: 18 }}
                     backgroundColor='transparent'
-                    onPress={ () => navigation.goBack() }
+                    onPress={() => navigation.goBack()}
                 />
             )
-        }
+        };
     }
 
     constructor(props) {
@@ -33,7 +36,7 @@ class Member extends Component {
             participantListQuery: null,
             list: [],
             memberList: ds.cloneWithRows([])
-        }
+        };
     }
 
     componentDidMount() {
@@ -42,13 +45,16 @@ class Member extends Component {
 
     componentWillReceiveProps(props) {
         const { list } = props;
-        
-        if (list !== this.props.list) {        
+
+        if (list !== this.props.list) {
             const newList = [...this.state.list, ...list];
-            this.setState({ isLoading: false, list: newList, memberList: ds.cloneWithRows(newList) });
+            this.setState({
+              isLoading: false,
+              list: newList,
+              memberList: ds.cloneWithRows(newList) });
         }
     }
-    
+
     _initMember = () => {
         this.props.initMember();
         this._getMemberList(true);
@@ -88,16 +94,16 @@ class Member extends Component {
         this.setState({ isLoading: true, list: [], memberList: ds.cloneWithRows([]) }, () => {
             this.props.getMemberList(channelUrl);
         });
-    }    
-    
+    }
+
     _renderList = (rowData) => {
         return (
             <ListItem
                 containerStyle={{backgroundColor: '#fff'}}
                 avatar={(
-                    <Avatar 
+                    <Avatar
                         rounded
-                        source={rowData.profileUrl ? {uri: rowData.profileUrl} : require('../img/icon_sb_68.png')} 
+                        source={rowData.profileUrl ? {uri: rowData.profileUrl} : require('../img/icon_sb_68.png')}
                     />
                 )}
                 title={rowData.nickname}
@@ -138,10 +144,10 @@ function mapStateToProps({ member }) {
 }
 
 export default connect(
-    mapStateToProps, 
-    { 
-        initMember, 
-        getParticipantList, 
-        getMemberList 
+    mapStateToProps,
+    {
+        initMember,
+        getParticipantList,
+        getMemberList
     }
 )(Member);

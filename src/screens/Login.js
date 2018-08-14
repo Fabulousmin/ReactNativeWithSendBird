@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { View, TextInput, Image, AsyncStorage, KeyboardAvoidingView } from 'react-native';
+import { View, Image, AsyncStorage, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
+import { Button, Icon, Text, Input, Form, Item, Label } from 'native-base';
+import { initLogin, sendbirdLogin, kakaoLogin } from '../actions';
 import {
     sbRegisterPushToken
   } from '../sendbirdActions';
-import { NavigationActions } from 'react-navigation';
 import { Spinner } from '../components';
-import { Container, Header, Content, Button, Icon, Text, Input, Form, Item, Label  } from 'native-base';
-import { initLogin, sendbirdLogin, kakaoLogin  } from '../actions'
-import NativeButton from 'apsl-react-native-button';
+
 
 class Login extends Component {
     static navigationOptions = {
@@ -21,7 +20,7 @@ class Login extends Component {
             isLoading: false,
             userId: '',
             password: ''
-        }
+        };
     }
 
     componentDidMount() {
@@ -32,7 +31,7 @@ class Login extends Component {
         let { user, error } = props;
         if (user) {
             AsyncStorage.getItem('pushToken', (err, pushToken) => {
-                if(pushToken) {
+                if (pushToken) {
                     sbRegisterPushToken(pushToken)
                         .then(res => {})
                         .catch(err => {});
@@ -61,7 +60,7 @@ class Login extends Component {
     }
 
     _onKakaoButtonPress = () => {
-      this.setState({ isLoading: true } , () =>{
+      this.setState({ isLoading: true }, () => {
         this.props.kakaoLogin();
       });
     }
@@ -73,11 +72,11 @@ class Login extends Component {
               style={styles.containerStyle}
               behavior="padding"
               enabled
-            >
+          >
                 <Spinner visible={this.state.isLoading} />
                 <View style={styles.logoViewStyle}>
                     <Image
-                        style={{width: 150, height: 150}}
+                        style={{ width: 150, height: 150 }}
                         source={require('../img/logo.png')}
                     />
                 </View>
@@ -119,14 +118,15 @@ class Login extends Component {
 
                   </Form>
 
-                  <View style ={styles.buttonContainer}>
+                  <View style={styles.buttonContainer}>
                       <Button
                         iconLeft
                         block
                         success
                         onPress={this._onButtonPress}
-                        disabled={this.state.isLoading}>
-                        <Icon name='home'/>
+                        disabled={this.state.isLoading}
+                      >
+                        <Icon name='home' />
                         <Text>로그인</Text>
                       </Button>
 
@@ -154,7 +154,7 @@ class Login extends Component {
 function mapStateToProps({ login }) {
     const { error, user } = login;
     return { error, user };
-};
+}
 
 export default connect(mapStateToProps, { initLogin, sendbirdLogin, kakaoLogin })(Login);
 

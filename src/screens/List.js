@@ -11,7 +11,7 @@ export default class List extends Component {
 
   state = {
       refreshing:false,
-      data: UserList(5),
+      data: UserList(1),
     }
     onEndReached = () => {
      this.setState(state => ({
@@ -40,10 +40,12 @@ export default class List extends Component {
          renderItem={({ item }) => {
            return (
              <CardImage
+               source={{ uri: item.profileUrl }}
                nickname={item.nickname}
                city={item.city}
                sex={item.sex}
                number={item.number}
+               selfIntro={item.selfIntro}
              />
            );
          }}

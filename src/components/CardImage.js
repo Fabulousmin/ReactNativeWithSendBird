@@ -15,7 +15,10 @@ const CardImage = ( props ) => {
               </Left>
             </CardItem>
             <CardItem cardBody>
-              <Image source={props.source} style={{height: 200, width: null, flex: 1}}/>
+              <Image source={props.source} style={{height: 300, width: null, flex: 1}}/>
+            </CardItem>
+            <CardItem>
+              <Text>{props.selfIntro}</Text>
             </CardItem>
             <CardItem>
               <Left>

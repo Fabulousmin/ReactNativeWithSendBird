@@ -4,47 +4,44 @@ import {
   AppState,
   AsyncStorage,
   PushNotificationIOS,
-  View
-} from "react-native";
-import { Spinner } from './src/components'
-import { StackNavigator, TabNavigator, SwitchNavigator } from "react-navigation";
-import { Provider } from "react-redux";
+} from 'react-native';
+import { StackNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
+import { Provider } from 'react-redux';
 import FCM, {
   FCMEvent,
   NotificationType,
   NotificationActionType,
   RemoteNotificationResult,
   WillPresentNotificationResult
-} from "react-native-fcm";
+} from 'react-native-fcm';
+import firebase from 'firebase';
 import SendBird from 'sendbird';
 import {
   sbRegisterPushToken
 } from './src/sendbirdActions';
+import store from './src/store';
+import Start from './src/screens/Start';
+import Login from './src/screens/Login';
+import Menu from './src/screens/Menu';
+import Profile from './src/screens/Profile';
+import OpenChannel from './src/screens/OpenChannel';
+import OpenChannelCreate from './src/screens/OpenChannelCreate';
+import Chat from './src/screens/Chat';
+import Member from './src/screens/Member';
+import BlockUser from './src/screens/BlockUser';
+import GroupChannel from './src/screens/GroupChannel';
+import GroupChannelInvite from './src/screens/GroupChannelInvite';
+import List from './src/screens/List';
 
-import store from "./src/store";
-import Start from "./src/screens/Start";
-import Login from "./src/screens/Login";
-import Menu from "./src/screens/Menu";
-import Profile from "./src/screens/Profile";
-import OpenChannel from "./src/screens/OpenChannel";
-import OpenChannelCreate from "./src/screens/OpenChannelCreate";
-import Chat from "./src/screens/Chat";
-import Member from "./src/screens/Member";
-import BlockUser from "./src/screens/BlockUser";
-import GroupChannel from "./src/screens/GroupChannel";
-import GroupChannelInvite from "./src/screens/GroupChannelInvite";
-import List from "./src/screens/List";
-import firebase from 'firebase';
 
 const MainNavigator = SwitchNavigator(
   {
-       Start:{ screen:Start },
-
+       Start: { screen: Start },
        LoginStack: StackNavigator({
-          Login: { screen:Login }},{
+          Login: { screen: Login } }
+          , {
             initialRouteName: 'Login'
           }),
-
       Main: TabNavigator({
         ProfileStack: StackNavigator({
           Profile: { screen: Profile }
@@ -52,11 +49,9 @@ const MainNavigator = SwitchNavigator(
           {
             initialRouteName: 'Profile'
           }),
-
         List: { screen: List },
-
-        MenuStack:  StackNavigator({
-          Menu: {screen: Menu},
+        MenuStack: StackNavigator({
+          Menu: { screen: Menu },
           OpenChannel: { screen: OpenChannel },
           OpenChannelCreate: { screen: OpenChannelCreate },
           Chat: { screen: Chat },
@@ -64,7 +59,7 @@ const MainNavigator = SwitchNavigator(
           BlockUser: { screen: BlockUser },
           GroupChannel: { screen: GroupChannel },
           GroupChannelInvite: { screen: GroupChannelInvite },
-        },{
+        }, {
           initialRouteName: 'Menu',
         })
       },
@@ -72,25 +67,22 @@ const MainNavigator = SwitchNavigator(
         initialRouteName: 'ProfileStack'
       })
     }
-  ,{
+  , {
     initialRouteName: 'Start'
   }
 );
-
 let sb = null;
-
 function showLocalNotificationWithAction(notif) {
   try {
     const data = JSON.parse(notif.sendbird);
     FCM.presentLocalNotification({
       title: data.sender ? data.sender.name : 'SendBird',
       body: data.message,
-      priority: "high",
+      priority: 'high',
       show_in_foreground: true,
-      click_action: "com.sendbird.sample.reactnative" // for ios
+      click_action: 'com.sendbird.sample.reactnative' // for ios
     });
-  } catch (e) {
-  }
+   }catch (e){}
 }
 
 // these callback will be triggered even when app is killed
