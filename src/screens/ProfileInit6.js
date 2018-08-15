@@ -3,19 +3,17 @@ import { View , StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-nativ
 import { Text, Button, Header, Icon, Tile, FormLabel, FormInput } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
-import { fbProfileUpdate } from '../actions';
 import { Spinner } from '../components';
-const { width } = Dimensions.get('window');
+import { updateProfile } from '../actions';
 
+const { width } = Dimensions.get('window');
 class ProfileInit6 extends Component {
 
-  state =
-    {
-    profileUrl: '',
-    profileImgData:'',
-    selfIntro:'',
-    isLoading:false,
-    }
+  state = { profileUrl: '',
+            profileImgData:'',
+            selfIntro:'',
+            isLoading:false,
+          }
 
   _imagePick() {
     const pickerOptions = {
@@ -46,22 +44,23 @@ class ProfileInit6 extends Component {
         profileUrl: response.uri ,
         profileImgData: response.data
       });
-
     }
   });
 }
 
 
-  async uploadProfile(){
-    this.setState({isLoading:true});
-    const { sex, age, nickname, city, number } = this.props.navigation.state.params;
-    const { profileImgData, selfIntro } = this.state;
-    const userProfile = {sex, age, nickname, city, number, profileImgData, selfIntro};
-    await this.props.fbProfileUpdate(userProfile);
-  }
+
+
 
   onSelfIntroChanged(value: String){
     this.setState({selfIntro:value});
+  }
+
+  async _updateProfile(){
+    const { sex, age, city, number, nickname } = this.props.navigation.state.params;
+    const { profileUrl, selfIntro } = this.state;
+    const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro };
+    await this.props.updateProfile(userInfo);
   }
 
   componentWillReceiveProps(props){
@@ -72,10 +71,10 @@ class ProfileInit6 extends Component {
     }
   }
 
+
   render() {
     return (
       <KeyboardAvoidingView style = {styles.container}>
-        <Spinner visible={this.state.isLoading} />
         <Header
           leftComponent={
             <Icon
@@ -101,21 +100,17 @@ class ProfileInit6 extends Component {
             onChangeText={this.onSelfIntroChanged.bind(this)}
             placeholder='같이 소주한잔 어때요?'
           />
-
-
         </View>
         <View style ={styles.buttonContainer}>
           <Button
             title='다음'
             backgroundColor= '#74b9ff'
-            onPress={() => this.uploadProfile()}
+            onPress={() => this._updateProfile()}
           />
         </View>
       </KeyboardAvoidingView>
-
-  );
+    );
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -136,4 +131,4 @@ const mapStateToProps = ({ profile }) => {
     const { userInfo, error, isSaved } = profile;
     return { userInfo, error, isSaved };
 };
-export default connect(mapStateToProps, { fbProfileUpdate })(ProfileInit6);
+export default connect(mapStateToProps, { updateProfile })(ProfileInit6);

@@ -8,4 +8,6 @@ target 'ReactNativeWithSendBird' do
   # Pods for ReactNativeWithSendBird
   pod 'Firebase/Messaging'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
 end

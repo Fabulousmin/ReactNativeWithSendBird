@@ -34,7 +34,6 @@ const pickerOptions = {
   quility: 0.5,
   allowsEditing: true,
 };
-
 class Profile extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params } = navigation.state;
