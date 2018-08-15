@@ -11,15 +11,8 @@ import { Content,
         Text,
          Input,
           Button } from 'native-base';
-import { initProfile,
-    getCurrentUserInfo,
-    updateProfile,
-    fbProfileUpdate,
-    fbGetCurrentUserInfo,
-    } from '../actions';
-import {
-    Spinner
-} from '../components';
+import { initProfile, getCurrentUserInfo, updateProfile, } from '../actions';
+import { Spinner } from '../components';
 
 const { width } = Dimensions.get('window');
 
@@ -34,22 +27,8 @@ const pickerOptions = {
   quility: 0.5,
   allowsEditing: true,
 };
+
 class Profile extends Component {
-    static navigationOptions = ({ navigation }) => {
-        const { params } = navigation.state;
-        return {
-            title: 'Profile',
-            headerRight: (
-                <Button
-                    transparent
-                    info
-                    onPress={() => { params.handleSave() }}
-                >
-                  <Text style={{color: 'blue'}}>save</Text>
-                </Button>
-            )
-        }
-    };
 
     constructor(props) {
         super(props);
@@ -66,11 +45,10 @@ class Profile extends Component {
         };
     }
 
-    componentDidMount() {
-        this.props.navigation.setParams({ handleSave: this._onSaveButtonPress })
+   componentDidMount() {
         this.props.initProfile();
-        this.setState({ isLoading: true }, () => {
-            this.props.sGetCurrentUserInfo();
+        this.setState({ isLoading: true }, async () => {
+            await this.props.getCurrentUserInfo();
         });
     }
 
@@ -88,7 +66,6 @@ class Profile extends Component {
                    number,
                     isLoading: false });
         }
-        this.setState({ isLoading: false });
         if (isSaved) {
             this.props.navigation.goBack();
         }
@@ -127,14 +104,6 @@ class Profile extends Component {
   });
 }
 
-_onSaveButtonPress = () => {
-  const { profileImgData, nickname, selfIntro, age, sex, city, number } = this.state;
-  const profileInfo = { profileImgData, nickname, selfIntro, age, sex, city, number };
-    this.props.updateProfile(nickname);
-    this.props.fbProfileUpdate(profileInfo);
-    this.setState({ isLoading: true });
-    this.props.fbGetCurrentUserInfo();
-}
 
 _imagePick() {
   ImagePicker.showImagePicker(pickerOptions, (response) => {
@@ -278,7 +247,6 @@ const styles = {
     containerStyle: {
         backgroundColor: '#fff',
         flex: 1,
-
     },
     defaultMargin: {
         marginLeft: 14,
@@ -291,6 +259,4 @@ function mapStateToProps({ profile }) {
     return { userInfo, error, isSaved };
 }
 
-export default connect(
-    mapStateToProps,
-    { initProfile, getCurrentUserInfo, updateProfile, fbProfileUpdate, fbGetCurrentUserInfo})(Profile);
+export default connect( mapStateToProps, { initProfile, getCurrentUserInfo, updateProfile })(Profile);

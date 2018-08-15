@@ -80,6 +80,7 @@ class ProfileInit6 extends Component {
   render() {
     return (
       <KeyboardAvoidingView style = {styles.container}>
+        <Spinner visible={this.state.isLoading} />
         <Header
           leftComponent={
             <Icon

@@ -1,6 +1,7 @@
 import {
     INIT_PROFILE,
     GET_PROFILE_SUCCESS,
+    GET_PROFILE_FAIL,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAIL,
 
@@ -14,11 +15,27 @@ export const initProfile = () => {
     return { type: INIT_PROFILE }
 }
 
+
 export const getCurrentUserInfo = () => {
-    return {
-        type: GET_PROFILE_SUCCESS,
-        userInfo: sGetCurrentUserInfo()
-    }
+  return (dispatch) => {
+  sGetCurrentUserInfo()
+  .then((userInfo) => getProfileSuccess(dispatch, userInfo))
+  .catch((error) => getProfileFail(dispatch, error))
+  }
+}
+
+const getProfileSuccess = (dispatch ,userInfo) => {
+  dispatch({
+      type: GET_PROFILE_SUCCESS,
+      userInfo: userInfo,
+  })
+}
+
+const getProfileFail = (dispatch, error) => {
+  dispatch({
+      type: GET_PROFILE_FAIL,
+      error: error,
+  })
 }
 
 export const updateProfile = ( userInfo ) => {
