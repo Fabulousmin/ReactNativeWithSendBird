@@ -117,27 +117,18 @@ const fbFailGetUserInfo = (dispatch, error) => {
   })
 }
 
-const fbImageUpload = (profileImgData) => {
-  return new Promise ((resolve, reject) => {
+  const fbImageUpload = (profileImgData) => {
+    return new Promise ((resolve, reject) => {
     const uid = firebase.auth().currentUser.uid;
     const storageRef = firebase.storage().ref();
     const profileImagesRef = storageRef.child ( 'users/'+ uid +'/images/profileImg.jpg');
-    const metadata = {
-      contentType: 'image/jpeg'
-    }
-    const message = profileImgData;
-    profileImagesRef.putString(message, 'base64', metadata)
-    .then( snapshot => {
-      console.log('Uploaded a base64url string!');
-      resolve();
-    })
-    .catch( error => {
-      console.log(err);
-      reject();
-    });
-  })
+    const uploadTask = profileImagesRef.putString(profileImgData, 'base64', {contentType:'image/jpeg'})
+    uploadTask
+    .then((res) => {console.log('upload ok'); resolve()})
+    .catch((err) => {console.log('upload fail'); reject()})
+     }
+   )
 }
-
 
 const fbGetProfileImgUrl = ( uid ) => {
   return new Promise ((resolve, reject) => {
