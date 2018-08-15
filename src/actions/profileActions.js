@@ -17,7 +17,7 @@ export const initProfile = () => {
 export const getCurrentUserInfo = () => {
     return {
         type: GET_PROFILE_SUCCESS,
-        userInfo: sGetCurrentUserInfo(),
+        userInfo: sGetCurrentUserInfo()
     }
 }
 
