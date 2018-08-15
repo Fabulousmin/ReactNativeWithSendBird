@@ -143,7 +143,6 @@ subprojects {
     }
 }
 dependencies {
-    compile project(':react-native-fs')
     compile project(':react-native-kakao-logins')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:27.0.2'

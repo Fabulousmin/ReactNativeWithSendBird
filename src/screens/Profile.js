@@ -70,7 +70,7 @@ class Profile extends Component {
         this.props.navigation.setParams({ handleSave: this._onSaveButtonPress })
         this.props.initProfile();
         this.setState({ isLoading: true }, () => {
-            this.props.fbGetCurrentUserInfo();
+            this.props.sGetCurrentUserInfo();
         });
     }
 

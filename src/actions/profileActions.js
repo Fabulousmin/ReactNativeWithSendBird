@@ -6,9 +6,10 @@ import {
 
 } from './types';
 import { sbGetCurrentInfo, sbUpdateProfile } from '../sendbirdActions';
-import { sUpdateProfile, sUploadImage } from '../subyeonActions';
+import { sUpdateProfile, sUploadImage, sGetCurrentUserInfo } from '../subyeonActions';
 
 const firebase = require('firebase');
+
 export const initProfile = () => {
     return { type: INIT_PROFILE }
 }
@@ -16,18 +17,19 @@ export const initProfile = () => {
 export const getCurrentUserInfo = () => {
     return {
         type: GET_PROFILE_SUCCESS,
-        userInfo: sbGetCurrentInfo()
+        userInfo: sGetCurrentUserInfo(),
     }
 }
 
 export const updateProfile = ( userInfo ) => {
     return (dispatch) => {
         const { sex, age, nickname, city, number, profileUrl, selfIntro } = userInfo;
-        sUploadImage(profileUrl, 'application/octet-stream')
-        .then((downloadURL) => {
-          sUpdateProfile({ ...userInfo , profileUrl: downloadURL })
-          .then((userInfo) => updateSuccess(dispatch, userInfo))
-          .catch((error) => updateFail(dispatch, error))
+        sUploadImage(profileUrl)
+        .then((downloadURL) =>{
+          console.log(downloadURL);
+          sUpdateProfile({...userInfo, profileUrl: downloadURL})
+          .then((res) =>  updateSuccess(dispatch, res))
+          .catch((error) =>  updateFail(dispatch, error))
         })
         .catch((error)=> updateFail(dispatch, error))
     }
@@ -40,9 +42,9 @@ const updateFail = (dispatch, error) => {
     });
 }
 
-const updateSuccess = (dispatch, user) => {
+const updateSuccess = (dispatch, userInfo) => {
     dispatch({
         type: UPDATE_PROFILE_SUCCESS,
-        userInfo: sbGetCurrentInfo()
+        userInfo: userInfo
     });
 }

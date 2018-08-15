@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.facebook.react.ReactApplication;
-import com.rnfs.RNFSPackage;
 import com.dooboolab.kakaologins.RNKakaoLoginsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -29,7 +28,6 @@ public class MainApplication extends GlobalApplication implements ReactApplicati
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
-            new RNFSPackage(),
             new RNKakaoLoginsPackage(),
         new VectorIconsPackage(),
         new FIRMessagingPackage(),

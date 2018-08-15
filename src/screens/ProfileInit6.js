@@ -4,7 +4,7 @@ import { Text, Button, Header, Icon, Tile, FormLabel, FormInput } from 'react-na
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { Spinner } from '../components';
-import { updateProfile } from '../actions';
+import { updateProfile, initProfile } from '../actions';
 
 const { width } = Dimensions.get('window');
 class ProfileInit6 extends Component {
@@ -57,17 +57,22 @@ class ProfileInit6 extends Component {
   }
 
   async _updateProfile(){
+    this.setState({isLoading: true});
     const { sex, age, city, number, nickname } = this.props.navigation.state.params;
     const { profileUrl, selfIntro } = this.state;
     const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro };
     await this.props.updateProfile(userInfo);
   }
 
+  componentDidMount() {
+      this.props.initProfile();
+  }
+
   componentWillReceiveProps(props){
-    const { userInfo, isSaved, navigation } = props;
-    if( userInfo ){
+    const { userInfo, isSaved, error } = props;
+    if(isSaved){
       this.setState({isLoading:false});
-      navigation.navigate('Main');
+      this.props.navigation.navigate('Main');
     }
   }
 
@@ -127,8 +132,8 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ profile }) => {
+function mapStateToProps({ profile }) {
     const { userInfo, error, isSaved } = profile;
     return { userInfo, error, isSaved };
-};
-export default connect(mapStateToProps, { updateProfile })(ProfileInit6);
+}
+export default connect(mapStateToProps, { updateProfile, initProfile })(ProfileInit6);

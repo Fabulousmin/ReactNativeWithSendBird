@@ -2,17 +2,18 @@ import { Platform } from 'react-native';
 import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
 
+
 const Blob = RNFetchBlob.polyfill.Blob;
+const fs = RNFetchBlob.fs;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 
 export const sUpdateProfile = (userInfo) =>{
-  return new promise((resolve, reject)=> {
-    console.log(userInfo);
+  return new Promise((resolve, reject)=> {
     const database = firebase.database();
     const { currentUser } = firebase.auth();
-   database.ref('users/'+ currentUser.uid).set(userInfo1)
-        .then((userInfo) => {
+    database.ref('users/'+ currentUser.uid).set(userInfo)
+        .then((res) => {
         console.log('user info updated');
         resolve(userInfo);
         })
@@ -24,8 +25,8 @@ export const sUpdateProfile = (userInfo) =>{
  }
 
 
-export const sGetCurrentUserInfo = () =>
-  { return new Promise((resolve, reject) => {
+export const sGetCurrentUserInfo = () =>{
+   return new Promise((resolve, reject) => {
     const database = firebase.database();
     const { currentUser } = firebase.auth();
     if(currentUser.uid){
@@ -41,7 +42,7 @@ export const sGetCurrentUserInfo = () =>
   else {
     const error = 'uid does not exist'
     reject(error);
-  }
+      }
     }
   )
 }
@@ -101,22 +102,17 @@ export const sUploadImage = (uri, mime = 'application/octet-stream') => {
       let uploadBlob = null
       // const imageRef = storage.ref('images').child(`${sessionId}`)
       const { currentUser } = firebase.auth();
-      console.log('1');
       const imageRef = firebase.storage().ref().child('users/'+ currentUser.uid +'/images/profileImg.jpg');
 
-      console.log('11');
       fs.readFile(uploadUri, 'base64')
       .then((data) => {
-        console.log('2');
         return Blob.build(data, { type: `${mime};BASE64` })
       })
       .then((blob) => {
-        console.log('3');
         uploadBlob = blob
         return imageRef.put(blob, { contentType: mime })
       })
       .then(() => {
-        console.log('4');
         uploadBlob.close()
         return imageRef.getDownloadURL()
       })
