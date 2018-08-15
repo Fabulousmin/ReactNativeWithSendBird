@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { fbProfileUpdate } from '../actions';
 import { Spinner } from '../components';
-import firebase from 'firebase';
 const { width } = Dimensions.get('window');
 
 class ProfileInit6 extends Component {
@@ -47,33 +46,17 @@ class ProfileInit6 extends Component {
         profileUrl: response.uri ,
         profileImgData: response.data
       });
+
     }
   });
 }
 
-  uploadProfileImg (profileImgData) {
-    const uid = firebase.auth().currentUser.uid;
-    const storageRef = firebase.storage().ref();
-    const profileImagesRef = storageRef.child ( 'users/'+ uid +'/images/profileImg.jpg');
-    const metadata = {
-      contentType: 'image/jpeg'
-    }
-    const message = profileImgData;
-    profileImagesRef.putString(message, 'base64', metadata)
-    .then( snapshot => {
-      console.log('Uploaded a base64url string!');
-    })
-    .catch( error => {
-      console.log(err);
-    });
-}
 
   async uploadProfile(){
     this.setState({isLoading:true});
     const { sex, age, nickname, city, number } = this.props.navigation.state.params;
     const { profileImgData, selfIntro } = this.state;
     const userProfile = {sex, age, nickname, city, number, profileImgData, selfIntro};
-    await this.uploadProfileImg(profileImgData);
     await this.props.fbProfileUpdate(userProfile);
   }
 

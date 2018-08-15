@@ -47,6 +47,8 @@ export const fbProfileUpdate = ({ profileImgData, nickname, selfIntro, age, sex,
  return (dispatch) => {
    const database = firebase.database();
    const uid = firebase.auth().currentUser.uid;
+   fbImageUpload( profileImgData )
+   .then(() => {
      fbGetProfileImgUrl(uid)
      .then((profileUrl)=> {
        const userInfo = {
@@ -68,8 +70,12 @@ export const fbProfileUpdate = ({ profileImgData, nickname, selfIntro, age, sex,
        console.log('fail to update userinfo' + error);
        updateFail(dispatch, error);})
      })
-    .catch((error) => {console.log(error + 'fail to get profileUrl')});
-   }
+    .catch((error) => {console.log(error + 'fail to get profileUrl')}); })
+  .catch(() => {
+      console.log('fail to upload image');
+      updateFail(dispatch, error);
+  })
+}
 }
 
 export const fbGetCurrentUserInfo = (dispatch) => {

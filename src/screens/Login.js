@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, AsyncStorage, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
-import { Button, Icon, Text, Input, Form, Item, Label } from 'native-base';
+import { FormLabel, FormInput, FormValidationMessage, Button, Text } from 'react-native-elements'
 import { initLogin, sendbirdLogin, kakaoLogin } from '../actions';
 import {
     sbRegisterPushToken
@@ -36,7 +36,7 @@ class Login extends Component {
                         .then(res => {})
                         .catch(err => {});
                 }
-                this.props.navigation.navigate('ProfileInit');
+                this.props.navigation.navigate('Start');
             });
         }
         if (error) {
@@ -82,10 +82,8 @@ class Login extends Component {
                 </View>
 
                 <View style={styles.formViewStyle}>
-                  <Form>
-                    <Item>
-                      <Label>이메일</Label>
-                      <Input
+                      <FormLabel>이메일</FormLabel>
+                      <FormInput
                           placeholder="user@email.com"
                           placeholderTextColor="rgba(255,255,255,0.5)"
                           autoCapitalize="none"
@@ -97,11 +95,9 @@ class Login extends Component {
                           value={this.state.userId}
                           onChangeText={this._onUserIdChanged}
                       />
-                    </Item>
 
-                    <Item>
-                      <Label>비밀번호</Label>
-                      <Input
+                      <FormLabel>비밀번호</FormLabel>
+                      <FormInput
                           placeholder="password"
                           placeholderTextColor="rgba(255,255,255,0.5)"
                           secureTextEntry
@@ -114,31 +110,32 @@ class Login extends Component {
                           value={this.state.password}
                           onChangeText={this._onPasswordChanged}
                       />
-                    </Item>
-
-                  </Form>
 
                   <View style={styles.buttonContainer}>
                       <Button
-                        iconLeft
-                        block
-                        success
+                        title='로그인'
+                        icon={{name:'ios-log-in', color:'black' , type: 'ionicon'}}
+                        backgroundColor='#54a0ff'
                         onPress={this._onButtonPress}
                         disabled={this.state.isLoading}
-                      >
-                        <Icon name='home' />
-                        <Text>로그인</Text>
-                      </Button>
-
+                        borderRadius={5}
+                        fontWeight='600'
+                      />
                       <Button
-                        warning
-                        iconLeft
-                        block
+                        title='페이스북으로 로그인'
+                        icon={{name:'logo-facebook', color:'white', type: 'ionicon'}}
+                        backgroundColor='#3b5998'
                         onPress={this._onKakaoButtonPress.bind(this)}
-                        >
-                        <Icon name='home' />
-                        <Text>카카오톡으로 로그인</Text>
-                      </Button>
+                        borderRadius={5}
+                        fontWeight='600'
+                      />
+                      <Button
+                        title='카카오톡으로 로그인'
+                        backgroundColor='#fcd411'
+                        onPress={this._onKakaoButtonPress.bind(this)}
+                        borderRadius={5}
+                        fontWeight='600'
+                      />
                   </View>
 
                 <Text style={styles.errorTextStyle}>{this.props.error}</Text>
@@ -164,18 +161,18 @@ const styles = {
         flex: 1
     },
     logoViewStyle: {
-        flex: 2,
+        flex: 5,
         alignItems: 'center',
         justifyContent: 'center'
     },
     formViewStyle: {
-      flex: 2.5,
+      flex: 5,
     },
     buttonContainer: {
         flex: 1,
-        marginTop: 20,
         marginHorizontal: 10,
-        justifyContent: 'space-around'
+        marginTop:10,
+        justifyContent:'space-between',
     },
     errorTextStyle: {
         alignSelf: 'center',
