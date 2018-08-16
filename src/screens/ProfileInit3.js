@@ -9,7 +9,7 @@ class ProfileInit3 extends Component {
 
   state = {
     nickname:'',
-    duplicated:true
+    duplicated: false,
   };
 
 
@@ -59,9 +59,14 @@ class ProfileInit3 extends Component {
             <FormLabel>닉네임</FormLabel>
             <FormInput
               placeholder='닉네임을 입력해 주세요'
+              autoCapitalize="none"
+              autoCorrect={false}
+              maxLength={10}
+
               placeholderColor='#8395a7'
               onChangeText={this.onNicknameChanged.bind(this)}
               value={this.state.nickname}
+              autoCorrection={false}
             />
             {this.renderValidationMessage(this.state.duplicated)}
           </View>

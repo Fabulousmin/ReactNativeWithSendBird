@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { UserList } from '../UserList';
 import { CardImage } from '../components';
+import { connect } from 'react-redux';
 
 export default class List extends Component {
 
