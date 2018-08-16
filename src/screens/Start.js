@@ -54,7 +54,7 @@ class Start extends Component {
                                               ]
                                           }));
                                       }
-                                      else this.props.navigation.navigate('ProfileInit')
+                                      else this.props.navigation.navigate('Profile')
                                   });
                               });
                           })
