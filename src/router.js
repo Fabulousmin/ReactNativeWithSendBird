@@ -17,6 +17,7 @@ import ProfileInit5 from './screens/ProfileInit5';
 import ProfileInit6 from './screens/ProfileInit6';
 import Start from './screens/Start';
 import Store from './screens/Store';
+import ChatSelection from './screens/ChatSelection';
 
 import { StackNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
 
@@ -53,9 +54,9 @@ const MenuStack = StackNavigator({
 })
 
 const MainTab =  TabNavigator({
-         Profile: { screen: Profile},
             List: { screen: List },
-       MenuStack: MenuStack
+         Profile: { screen: ChatSelection},
+           Store: { screen: Store},
   },
 {
   tabBarOptions: {
@@ -67,12 +68,20 @@ const MainTab =  TabNavigator({
   swipeEnabled: true
 })
 
+const MainStack = StackNavigator({
+  MainTab: MainTab,
+  MenuStack: MenuStack,
+},
+{
+  initialRouteName: 'MainTab',
+  headerMode: 'none'
+})
 
 export const MainNavigator = SwitchNavigator({
              Start: { screen: Start},
         LoginStack: LoginStack,
   ProfileInitStack: ProfileInitStack,
-           MainTab: MainTab,
+         MainStack: MainStack,
 },
 {
   initialRouteName: 'Start'
