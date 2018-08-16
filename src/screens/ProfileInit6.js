@@ -72,7 +72,7 @@ class ProfileInit6 extends Component {
     const { userInfo, isSaved, error } = props;
     if(isSaved){
       this.setState({isLoading:false});
-      this.props.navigation.navigate('Main');
+      this.props.navigation.navigate('MainTab');
     }
   }
 
