@@ -95,19 +95,3 @@ const loginSuccess = (dispatch, user) => {
         payload: user
     });
 }
-
-const fbInitUserInfo = () => {
-    const database = firebase.database();
-  const uid = firebase.auth().currentUser.uid;
-  const userInfo = {
-  uid: uid
-};
-  if(uid) {
-    database.ref('users/'+ uid).set(userInfo)
-    .then(() => console.log('success init userInfo'))
-    .catch(() => console.log('fail init userInfo'))
-  }
-  else{
-    console.log('cannot resolve uid from firebase server')
-  }
-}
