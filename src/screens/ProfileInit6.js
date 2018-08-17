@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View , StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native';
-import { Text, Button, Header, Icon, Tile, FormLabel, FormInput } from 'react-native-elements';
+import { Text, Button, Header, Icon, Tile, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { Spinner } from '../components';
@@ -49,9 +49,6 @@ class ProfileInit6 extends Component {
 }
 
 
-
-
-
   onSelfIntroChanged(value: String){
     this.setState({selfIntro:value});
   }
@@ -60,8 +57,14 @@ class ProfileInit6 extends Component {
     this.setState({isLoading: true});
     const { sex, age, city, number, nickname } = this.props.navigation.state.params;
     const { profileUrl, selfIntro } = this.state;
+    if(this.state.profileUrl && this.state.selfIntro) {
+    this.setState({allInfoReceived:true})
     const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro };
-    await this.props.updateProfile(userInfo);
+    await this.props.updateProfile(userInfo);}
+    else{
+    this.setState({isLoading: false});
+    return
+    }
   }
 
   componentDidMount() {
@@ -75,7 +78,18 @@ class ProfileInit6 extends Component {
       this.props.navigation.navigate('MainStack');
     }
   }
-
+  renderValidationMessage( {profileUrl, selfIntro} ) {
+    if( !profileUrl ){
+    return(
+        <FormValidationMessage>사진을 선택해주세요</FormValidationMessage>
+    )
+  }
+    if( !selfIntro ){
+      return(
+        <FormValidationMessage>자기소개를 입력해주세요</FormValidationMessage>
+      )
+    }
+  }
 
   render() {
     return (
@@ -106,6 +120,7 @@ class ProfileInit6 extends Component {
             onChangeText={this.onSelfIntroChanged.bind(this)}
             placeholder='같이 소주한잔 어때요?'
           />
+          {this.renderValidationMessage(this.state)}
         </View>
         <View style ={styles.buttonContainer}>
           <Button

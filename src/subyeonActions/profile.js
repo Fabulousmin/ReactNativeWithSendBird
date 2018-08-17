@@ -47,53 +47,6 @@ export const sGetCurrentUserInfo = () =>{
   )
 }
 
-// export const sImageUpload = (profileImgData) =>
-// const {currentUser} = firebase.auth();
-// const storageRef = firebase.storage().ref();
-// const profileImagesRef = storageRef.child ( 'users/'+ currentUser.uid +'/images/profileImg.jpg');
-// profileImagesRef.putString(profileImgData, 'base64', {contentType:'image/jpeg'})
-// .then((res) => {console.log(res + 'upload ok'); dispatch(Promise.resolve(res))})
-// .catch((err) => {console.log(err + 'upload fail'); dispatch(Promise.reject(err))})
-// }
-
-// export const sGetProfileImgUrl = ( uid ) =>
-// return new Promise((resolve, reject) => {
-//   const storage = firebase.storage();
-//   const storageRef = storage.ref( 'users/'+ uid+'/images/' );
-//   const profileRef = storageRef.child('profileImg.jpg');
-//   profileRef.getDownloadURL()
-//   .then(url => {
-//     console.log('get url success url:' + url);
-//     resolve(url));
-//   })
-//   .catch(error => {
-//     console.log('fail to get url' + error );
-//     reject(error));
-//   })
-// }
-
-// export const sUploadImage = (uri) =>{
-// return new Promise ((resolve, reject) => {
-//   fetch(uri)
-//   .then((res) => res.blob()
-//     .then((blob) => {
-//       const { currentUser } = firebase.auth();
-//       const storageRef = firebase.storage().ref();
-//       const ref = firebase.storage().ref().child('users/'+ currentUser.uid +'/images/profileImg.jpg');
-//       ref.put(blob)
-//       .then((snapshot) => snapshot.ref.getDownloadURL()
-//         .then((downloadURL) => {console.log('upload ok'); resolve(downloadURL);})
-//         .catch((error) => {console.log('upload fail1', error); reject(error);})
-//       )
-//       .catch((error) => {console.log('upload fail2', error); reject(error);});
-//     })
-//     .catch((error) => {console.log('upload fail3',error); reject(error);})
-//   )
-//   .catch((error) => {console.log('upload fail4',error); reject(error);})
-//     }
-//   )
-// }
-
 
 export const sUploadImage = (uri, mime = 'application/octet-stream') => {
   return new Promise((resolve, reject) => {
