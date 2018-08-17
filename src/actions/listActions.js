@@ -1,24 +1,15 @@
 import {
-  GET_PROFILE_SUCCESS,
-  GET_PROFILE_FAIL,
+  INIT_USERLIST,
   GET_USERLIST_SUCCESS,
   GET_USERLIST_FAIL,
 } from './types';
 
+import { sGetUserlist, sGetCurrentUserInfo } from '../subyeonActions';
 
 
-
-const getProfileSuccess = (dispatch, userInfo) => {
-  dispatch({
-    type:GET_PROFILE_SUCCESS,
-    userInfo: userInfo
-  })
-}
-
-const getProfileFail = (dispatch, error) => {
-  dispatch({
-    type:GET_PROFILE_FAIL,
-    error:error
+export const initUserlist = () => {
+  return ({
+    type: INIT_USERLIST
   })
 }
 
@@ -34,4 +25,16 @@ const getUserlistFail = (dispatch, error) => {
     type:GET_USERLIST_FAIL,
     error: error
   })
+}
+
+export const getUserlist = () => {
+  return (dispatch) => {
+      sGetUserlist()
+      .then((userlist)=> {
+        getUserlistSuccess(dispatch, userlist);
+      })
+      .catch((error)=> {
+        getUserlistFail(dispatch, error);
+      })
+  }
 }
