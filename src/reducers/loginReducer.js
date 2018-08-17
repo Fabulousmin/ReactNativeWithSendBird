@@ -1,7 +1,7 @@
-import { 
+import {
     INIT_LOGIN,
-    LOGIN_SUCCESS, 
-    LOGIN_FAIL 
+    LOGIN_SUCCESS,
+    LOGIN_FAIL
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -11,13 +11,13 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case INIT_LOGIN: 
+        case INIT_LOGIN:
             return { ...state, ...INITIAL_STATE };
-        case LOGIN_SUCCESS: 
+        case LOGIN_SUCCESS:
             return { ...state, ...INITIAL_STATE, user: action.payload };
         case LOGIN_FAIL:
             return { ...state, ...INITIAL_STATE, error: action.payload };
-        default: 
+        default:
             return state;
     }
 };
