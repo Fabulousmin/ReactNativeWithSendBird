@@ -95,5 +95,6 @@ export const USER_UNBLOCK_SUCCESS = 'user_unblock_success';
 export const USER_UNBLOCK_FAIL = 'user_unblock_fail';
 
 // Userlist
+export const INIT_USERLIST = 'init_userlist';
 export const GET_USERLIST_FAIL = 'get_userlist_fail';
 export const GET_USERLIST_SUCCESS = 'get_userlist_success';
