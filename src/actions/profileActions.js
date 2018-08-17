@@ -40,7 +40,7 @@ const getProfileFail = (dispatch, error) => {
 
 export const updateProfile = ( userInfo ) => {
     return (dispatch) => {
-        const { sex, age, nickname, city, number, profileUrl, selfIntro } = userInfo;
+        const { profileUrl } = userInfo;
         sUploadImage(profileUrl)
         .then((downloadURL) =>{
           console.log(downloadURL);
