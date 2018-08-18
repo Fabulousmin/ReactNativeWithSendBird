@@ -7,7 +7,7 @@ import {
     sbGetChannelTitle
 } from '../sendbirdActions';
 import { Spinner } from '../components';
-
+import { getCurrentUserInfo } from '../actions'
 
 const { width , height } = Dimensions.get('window');
 const firebase = require('firebase');
@@ -20,7 +20,7 @@ class Start extends Component {
         };
     }
 
-    componentDidMount() {
+     componentDidMount() {
       firebase.auth().onAuthStateChanged((user) => {
         if(user) {
           {AsyncStorage.getItem("user", (err, result) => {
@@ -54,7 +54,7 @@ class Start extends Component {
                                               ]
                                           }));
                                       }
-                                      else this.props.navigation.navigate('ProfileInitStack')
+                                      else this.props.navigation.navigate('MainStack')
                                   });
                               });
                           })
@@ -105,12 +105,13 @@ class Start extends Component {
     }
 }
 
-function mapStateToProps({ login }) {
+function mapStateToProps({ login, profile }) {
     const { error, user } = login;
-    return { error, user };
+    const { userInfo } = profile;
+    return { error, user, userInfo };
 };
 
-export default connect(mapStateToProps, {})(Start);
+export default connect(mapStateToProps, {getCurrentUserInfo})(Start);
 
 const styles = {
     containerStyle: {
