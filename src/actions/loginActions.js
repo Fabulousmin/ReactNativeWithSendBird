@@ -6,6 +6,7 @@ import {
 import { sbConnect } from '../sendbirdActions';
 import RNKakaoLogins from 'react-native-kakao-logins';
 import axios from 'axios';
+import { sUpdateProfile } from '../subyeonActions';
 
 const firebase = require('firebase');
 
@@ -17,16 +18,14 @@ export const sendbirdLogin = ({ userId, password }) => {
     return (dispatch) => {
         firebase.auth().signInWithEmailAndPassword(userId, password)
         .then(user => {
-          console.log(user);
-          sbConnect(userId)
-        .then((user) => loginSuccess(dispatch, user) )
+          sbConnect(userId, 'wtd')
+        .then((user) => {console.log(user);loginSuccess(dispatch, user) })
         .catch((error) => loginFail(dispatch, error.message) );
       })
       .catch((error) => {
         console.log(error);
         firebase.auth().createUserWithEmailAndPassword(userId, password)
         .then( () => {
-        fbInitUserInfo();
         console.log('user created');
         firebase.auth().signInWithEmailAndPassword(userId, password)
         .then(() => {
