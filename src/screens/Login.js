@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, AsyncStorage, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { FormLabel, FormInput, FormValidationMessage, Button, Text } from 'react-native-elements'
-import { initLogin, sendbirdLogin, kakaoLogin } from '../actions';
+import { initLogin, sendbirdLogin, kakaoLogin, getCurrentUserInfo } from '../actions';
 import {
     sbRegisterPushToken
   } from '../sendbirdActions';
@@ -23,12 +23,13 @@ class Login extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.initLogin();
-    }
+      }
 
     componentWillReceiveProps(props) {
-        let { user, error } = props;
+        async () => await getCurrentUserInfo();
+        let { user, error, userInfo } = props;
         if (user) {
             AsyncStorage.getItem('pushToken', (err, pushToken) => {
                 if (pushToken) {
@@ -36,13 +37,17 @@ class Login extends Component {
                         .then(res => {})
                         .catch(err => {});
                 }
-                this.props.navigation.navigate('Start');
-            });
-        }
+
+                if(userInfo){
+                this.props.navigation.navigate('MainStack')}
+                else this.props.navigation.navigate('ProfileInitStack')
+                    })
         if (error) {
             this.setState({ isLoading: false });
         }
     }
+  }
+
 
     _onUserIdChanged = (userId) => {
         this.setState({ userId });
@@ -148,12 +153,13 @@ class Login extends Component {
     }
 }
 
-function mapStateToProps({ login }) {
+function mapStateToProps({ login, profile }) {
     const { error, user } = login;
-    return { error, user };
+    const { userInfo } = profile;
+    return { error, user, userInfo };
 }
 
-export default connect(mapStateToProps, { initLogin, sendbirdLogin, kakaoLogin })(Login);
+export default connect(mapStateToProps, { initLogin, sendbirdLogin, kakaoLogin, getCurrentUserInfo })(Login);
 
 const styles = {
     containerStyle: {
