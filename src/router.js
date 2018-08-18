@@ -55,8 +55,9 @@ const MenuStack = StackNavigator({
 
 const MainTab =  TabNavigator({
             List: { screen: List },
-         Profile: { screen: ChatSelection},
+            Chat: { screen: ChatSelection},
            Store: { screen: Store},
+            Menu: MenuStack,
   },
 {
   tabBarOptions: {

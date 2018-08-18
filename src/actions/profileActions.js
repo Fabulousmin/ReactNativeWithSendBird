@@ -43,10 +43,9 @@ export const updateProfile = ( userInfo ) => {
         const { profileUrl } = userInfo;
         sUploadImage(profileUrl)
         .then((downloadURL) =>{
-          console.log(downloadURL);
           sUpdateProfile({...userInfo, profileUrl: downloadURL})
-          .then((res) =>  updateSuccess(dispatch, res))
-          .catch((error) =>  updateFail(dispatch, error))
+          .then((res) => {console.log('update ok');updateSuccess(dispatch, res)})
+          .catch((error) =>  {console.log(error);updateFail(dispatch, error)})
         })
         .catch((error)=> updateFail(dispatch, error))
     }
