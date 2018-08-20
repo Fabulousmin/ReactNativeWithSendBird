@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
-import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
+import firebase from 'firebase';
 
 
 const Blob = RNFetchBlob.polyfill.Blob;
@@ -36,7 +36,8 @@ export const sGetCurrentUserInfo = () =>{
       const userInfo = snapshot.val();
       resolve(userInfo);
       })
-    .catch( (error) => {
+    .catch( () => {
+      const error = 'sGetCurrentUserInfo fail'
       reject(error);
     })
   }
