@@ -57,9 +57,8 @@ class ProfileInit6 extends Component {
     this.setState({isLoading: true});
     const { sex, age, city, number, nickname } = this.props.navigation.state.params;
     const { profileUrl, selfIntro } = this.state;
-    const isProfile = true
     if(profileUrl && selfIntro) {
-    const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro, isProfile };
+    const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro, isProfile:'1', likedList:[], likeList:[] };
     await this.props.updateProfile(userInfo);}
     else{
     this.setState({isLoading: false});
