@@ -4,10 +4,12 @@ import {
   FlatList,
   View
 } from 'react-native';
-import { initUserlist, getUserlist, getCurrentUserInfo} from '../actions';
+import { initUserlist, getUserlist } from '../actions';
 import { UserList } from '../UserList';
 import { CardImage, Spinner } from '../components';
 import { connect } from 'react-redux';
+import { sOnPressLike, sGetCurrentUserInfo } from '../subyeonActions';
+
 class List extends Component {
 
   state = {
@@ -23,6 +25,7 @@ class List extends Component {
    onRefresh = async () => {
     await this.props.getUserlist();
    }
+
 
    renderFlatList(isLoading) {
      return (<FlatList
@@ -43,27 +46,37 @@ class List extends Component {
             number={item.number}
             selfIntro={item.selfIntro}
             age={item.age}
+            onPress={() => this.onPressLike(item.uid)}
           />
         );
       }}
     />)
    }
 
+   onPressLike(uid) {
+     sGetCurrentUserInfo()
+     .then((userInfo)=> {
+       const { nickname } = userInfo;
+       sOnPressLike(uid, nickname);
+     })
+   }
+
    componentDidMount() {
         this.props.initUserlist();
         this.setState({ isLoading: true }, async () => {
-            await this.props.getUserlist();
-            await this.props.getCurrentUserInfo();
+          await this.props.getUserlist();
         });
     }
 
     componentWillReceiveProps(props){
-      const { userlist, userInfo, error } = props;
-      console.log(userInfo ,userlist)
-        if (userlist.length >0) {
+      const { userlist, error} = props;
+      console.log(userlist.length)
+        if (userlist.length > 0 ) {
             this.setState({data: userlist, isLoading: false})
         }
     }
+
+
    _keyExtractor(item, index) {
      return item.nickname
    }
@@ -80,10 +93,10 @@ class List extends Component {
   }
 }
 
-const mapStateToProps = ({ list, profile }) => {
+const mapStateToProps = ({ list  }) => {
   const { userlist, error } = list;
-  const { userInfo } = profile;
-  return { userlist, userInfo, error };
+
+  return { userlist, error  };
 }
 
 const styles = StyleSheet.create({
@@ -97,6 +110,6 @@ export default connect(
     {
       initUserlist,
       getUserlist,
-      getCurrentUserInfo,
+
     }
 )(List);
