@@ -18,7 +18,6 @@ import ProfileInit6 from './screens/ProfileInit6';
 import Start from './screens/Start';
 import Store from './screens/Store';
 import ChatSelection from './screens/ChatSelection';
-
 import { StackNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
 
 const LoginStack = StackNavigator({
