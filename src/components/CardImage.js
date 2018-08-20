@@ -22,7 +22,10 @@ const CardImage = ( props ) => {
             </CardItem>
             <CardItem>
               <Left>
-                <Button transparent>
+                <Button
+                  transparent
+                  onPress={props.onPress}
+                  >
                   <Icon active name="thumbs-up" />
                   <Text>Likes</Text>
                 </Button>
