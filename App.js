@@ -19,61 +19,7 @@ import {
 } from './src/sendbirdActions';
 import { MainNavigator } from './src/router';
 import store from './src/store'
-// const MainNavigator = SwitchNavigator(
-//   {
-//        Start: { screen: Start },
-//        LoginStack: StackNavigator({
-//           Login: { screen: Login } }
-//           , {
-//             initialRouteName: 'Login'
-//           }),
-//       ProfileInit: StackNavigator(
-//         { ProfileInit1 :{ screen: ProfileInit1 },
-//           ProfileInit2 :{ screen: ProfileInit2 },
-//           ProfileInit3 :{ screen: ProfileInit3 },
-//           ProfileInit4 :{ screen: ProfileInit4 },
-//           ProfileInit5 :{ screen: ProfileInit5 },
-//           ProfileInit6 :{ screen: ProfileInit6 }
-//         },
-//         { initialRouteName: 'ProfileInit1',
-//           headerMode: 'none'
-//       }),
-//       Main: TabNavigator({
-//         ProfileStack: StackNavigator({
-//           Profile: { screen: Profile }
-//         },
-//           {
-//             initialRouteName: 'Profile'
-//           }),
-//         List: { screen: List },
-//         MenuStack: StackNavigator({
-//           Menu: { screen: Menu },
-//           OpenChannel: { screen: OpenChannel },
-//           OpenChannelCreate: { screen: OpenChannelCreate },
-//           Chat: { screen: Chat },
-//           Member: { screen: Member },
-//           BlockUser: { screen: BlockUser },
-//           GroupChannel: { screen: GroupChannel },
-//           GroupChannelInvite: { screen: GroupChannelInvite },
-//         }, {
-//           initialRouteName: 'Menu',
-//         })
-//       },
-//       {
-//         tabBarOptions: {
-//           activeTintColor:'#54a0ff',
-//           inactiveTintColor: '#8395a7'
-//         },
-//         tabBarPosition: 'bottom',
-//         animationEnabled: false,
-//         swipeEnabled: true
-//
-//       })
-//     }
-//   , {
-//     initialRouteName: 'Start'
-//   }
-// );
+
 let sb = null;
 function showLocalNotificationWithAction(notif) {
   try {
