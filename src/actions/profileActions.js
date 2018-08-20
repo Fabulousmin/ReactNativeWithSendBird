@@ -41,9 +41,10 @@ const getProfileFail = (dispatch, error) => {
 export const updateProfile = ( userInfo ) => {
     return (dispatch) => {
         const { profileUrl } = userInfo;
+        const { currentUser } = firebase.auth();
         sUploadImage(profileUrl)
         .then((downloadURL) =>{
-          sUpdateProfile({...userInfo, profileUrl: downloadURL})
+          sUpdateProfile({...userInfo, profileUrl: downloadURL, uid: currentUser.uid})
           .then((res) => {console.log('update ok');updateSuccess(dispatch, res)})
           .catch((error) =>  {console.log(error);updateFail(dispatch, error)})
         })
