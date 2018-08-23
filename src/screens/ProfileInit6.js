@@ -49,8 +49,6 @@ class ProfileInit6 extends Component {
         profileUrl: response.uri ,
         profileImgData: response.data,
         sendId: sb.currentUser.userId,
-        like:'',
-        liked:'',
       });
     }
   });
@@ -66,7 +64,7 @@ class ProfileInit6 extends Component {
     const { sex, age, city, number, nickname } = this.props.navigation.state.params;
     const { profileUrl, selfIntro,sendId,like,liked } = this.state;
     if(profileUrl && selfIntro) {
-    const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro,sendId,isProfile:'1', likedList:[], likeList:[] };
+    const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro, sendId, isProfile:'1', heart:10};
     await this.props.updateProfile(userInfo);}
     else{
     this.setState({isLoading: false});

@@ -13,6 +13,7 @@ import { initUserlist,
   groupChannelProgress,
   addGroupChannelItem,
   onGroupChannelPress,
+  getCurrentUserInfo
 } from '../actions';
 import { UserList } from '../UserList';
 import { CardImage, Spinner, SHeader } from '../components';
@@ -28,6 +29,7 @@ class List extends Component {
       isLoading: false,
       data: [],
       error: '',
+      heart: null,
     }
     onEndReached = async () => {
 
@@ -99,6 +101,7 @@ class List extends Component {
 
    componentDidMount() {
         this.props.initUserlist();
+        this.props.getCurrentUserInfo();
         this.props.initInvite();
         this.setState({ isLoading: true }, async () => {
           await this.props.getUserlist();
@@ -107,7 +110,10 @@ class List extends Component {
     }
 
     componentWillReceiveProps(props){
-      const { userlist, error,channel} = props;
+      const { userlist, error,channel, userInfo} = props;
+        if(userInfo){
+        this.setState({heart: userInfo.heart})
+      }
         if (userlist.length > 0 ) {
             this.setState({data: userlist, isLoading: false})
         }
@@ -135,6 +141,7 @@ class List extends Component {
         <SHeader
           onLeftPress={()=>this.props.navigation.navigate('Store')}
           onRightPress={()=>this.props.navigation.navigate('Menu')}
+          heart={this.state.heart}
         />
         {this.renderFlatList()}
       </View>
@@ -142,11 +149,12 @@ class List extends Component {
   }
 }
 
-const mapStateToProps = ({ list,groupChannelInvite}) => {
+const mapStateToProps = ({ list, groupChannelInvite, profile}) => {
   const { userlist, error } = list;
   const { channel } = groupChannelInvite;
+  const { userInfo } = profile;
 
-  return {userlist, error,channel};
+  return {userlist, error, channel, userInfo};
 }
 
 const styles = StyleSheet.create({
@@ -164,5 +172,6 @@ export default connect(
       groupChannelProgress,
       addGroupChannelItem,
       onGroupChannelPress,
+      getCurrentUserInfo
     }
 )(List);

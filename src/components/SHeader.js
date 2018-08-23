@@ -11,7 +11,7 @@ const SHeader = (props) => {
       leftComponent={
           <View style= {leftContainer}>
             <Icon type='font-awesome' name='heart' color='white' size={20} onPress={props.onLeftPress}/>
-            <Text style= {leftText}>+30{props.numOfHeart}</Text>
+            <Text style= {leftText}>{props.heart}</Text>
           </View>
           }
       centerComponent={
