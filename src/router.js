@@ -51,13 +51,36 @@ const MenuStack = StackNavigator({
   GroupChannelInvite: { screen: GroupChannelInvite },
 }, {
   initialRouteName: 'Menu',
+  headerMode: 'none',
 })
 
+const ListStack = StackNavigator({
+  List1: {screen: List}
+},{
+  initialRouteName: 'List1',
+  headerMode: 'none',
+})
+
+const ChatStack = StackNavigator({
+  Chat1: {screen: ChatSelection}
+},{
+  initialRouteName: 'Chat1',
+  headerMode: 'none',
+})
+
+const StoreStack = StackNavigator({
+  Store1: {screen: Store}
+},{
+  initialRouteName: 'Store1',
+  headerMode: 'none',
+})
+
+
+
 const MainTab =  TabNavigator({
-            List: { screen: List },
-            Chat: { screen: ChatSelection},
-           Store: { screen: Store},
-            Menu: MenuStack,
+            List: ListStack,
+            Chat: ChatStack,
+           Store: StoreStack
   },
 {
   navigationOptions: ({ navigation }) => ({
@@ -83,10 +106,10 @@ const MainTab =  TabNavigator({
   },
   tabBarPosition: 'bottom',
   animationEnabled: false,
-  swipeEnabled: true
+  swipeEnabled: true,
 })
 
-const MainStack = StackNavigator({
+const MainStack = SwitchNavigator({
   MainTab: MainTab,
   MenuStack: MenuStack,
 },
@@ -102,5 +125,6 @@ export const MainNavigator = SwitchNavigator({
          MainStack: MainStack,
 },
 {
-  initialRouteName: 'Start'
+  initialRouteName: 'Start',
+  headerMode: 'none'
 })

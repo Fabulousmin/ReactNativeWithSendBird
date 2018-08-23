@@ -5,13 +5,11 @@ import { sendbirdLogout, initMenu, fbLogOut } from '../actions';
 import {
     sbUnregisterPushToken
   } from '../sendbirdActions';
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation';
 import { Button, HR, Spinner } from '../components';
+import { Header, Icon, Text } from 'react-native-elements';
 
 class Menu extends Component {
-    static navigationOptions = {
-        title: 'Sendbird'
-    };
 
     constructor(props) {
         super(props);
@@ -58,17 +56,33 @@ class Menu extends Component {
         });
     }
 
+
+
     render() {
         return (
             <View style={styles.containerViewStyle}>
                 <Spinner visible={this.state.isLoading} />
+                <Header
+                  leftComponent=
+                  {<Icon
+                    type='Ionicons'
+                    name='arrow-back'
+                    color='white'
+                    onPress={()=>this.props.navigation.navigate('MainTab')}
+                   />}
+                  centerComponent=
+                  {
+                   <Text style={{color:'white', fontWeight:'600'}}>설정</Text>
+                  }
+                  backgroundColor='#74b9ff'
+                />
                 <Button
                     containerViewStyle={styles.menuViewStyle}
                     buttonStyle={styles.buttonStyle}
                     backgroundColor='#fff'
                     color='#6e5baa'
                     icon={{name: 'user', type: 'font-awesome' , color: '#6e5baa', size: 16}}
-                    title='Profile'
+                    title='프로필 설정'
                     onPress={this._onProfileButtonPress}
                 />
                 <HR />
@@ -78,7 +92,7 @@ class Menu extends Component {
                     backgroundColor='#fff'
                     color='#6e5baa'
                     icon={{name: 'slack', type: 'font-awesome' , color: '#6e5baa', size: 16}}
-                    title='Open Channel'
+                    title='오픈채팅'
                     onPress={this._onOpenChannelPress}
                 />
                 <HR />
@@ -88,7 +102,7 @@ class Menu extends Component {
                     backgroundColor='#fff'
                     color='#6e5baa'
                     icon={{name: 'users', type: 'font-awesome' , color: '#6e5baa', size: 16}}
-                    title='Group Channel'
+                    title='1:1 채팅'
                     onPress={this._onGroupChannelPress}
                 />
                 <HR />
@@ -99,7 +113,7 @@ class Menu extends Component {
                     color='#7d62d9'
                     color='#6e5baa'
                     icon={{name: 'sign-out', type: 'font-awesome' , color: '#6e5baa', size: 16}}
-                    title='Disconnect'
+                    title='로그아웃'
                     onPress={this._onDisconnectButtonPress}
                 />
                 <HR />

@@ -13,7 +13,7 @@ export default class Store extends Component {
       <View style={styles.container}>
         <SHeader
           onLeftPress={()=>this.props.navigation.navigate('Store')}
-          onRightPress={()=>this.props.navigation.navigate('Menu')}
+          onRightPress={()=>this.props.navigation.navigate('MenuStack')}
         />
       </View>
     );
