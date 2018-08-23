@@ -62,6 +62,19 @@ class List extends Component {
 
     }
 
+    getUpdatedBefore(updatedAt) {
+      const now = new Date();
+      const before = new Date(updatedAt);
+      if(before.getDate() == now.getDate())
+      {let result = (now - before)/60000
+        result = result /60
+        result = Math.floor(result*10)/10
+        console.log(result);
+        return result + ' 시간전'
+      }
+      else
+      return '1일전'
+    }
 
    renderFlatList(isLoading) {
      return (<FlatList
@@ -84,7 +97,7 @@ class List extends Component {
             age={item.age}
             onPress={() => this.onPressLike(item.uid)}
             onpress={()=>this.onCreateButtonPress(item.sendId)}
-
+            updatedAt={this.getUpdatedBefore(item.updatedAt)}
           />
         );
       }}
@@ -110,7 +123,7 @@ class List extends Component {
     }
 
     componentWillReceiveProps(props){
-      const { userlist, error,channel, userInfo} = props;
+      const { userlist, error, channel, userInfo} = props;
         if(userInfo){
         this.setState({heart: userInfo.heart})
       }

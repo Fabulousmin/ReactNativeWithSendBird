@@ -37,7 +37,7 @@ const CardImage = ( props ) => {
                 </Button>
               </Body>
               <Right>
-                <Text>1h ago</Text>
+                <Text>{props.updatedAt}</Text>
               </Right>
             </CardItem>
           </Card>
