@@ -6,12 +6,15 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-
+import { SHeader } from '../components';
 export default class ChatSelection extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>I'm the ChatSelection component</Text>
+        <SHeader
+          onLeftPress={()=>this.props.navigation.navigate('Store')}
+          onRightPress={()=>this.props.navigation.navigate('Menu')}
+        />
       </View>
     );
   }

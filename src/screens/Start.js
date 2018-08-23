@@ -7,7 +7,8 @@ import {
     sbGetChannelTitle
 } from '../sendbirdActions';
 import { Spinner } from '../components';
-import { getCurrentUserInfo } from '../actions'
+import { getCurrentUserInfo } from '../actions';
+
 
 const { width , height } = Dimensions.get('window');
 const firebase = require('firebase');
@@ -54,7 +55,7 @@ class Start extends Component {
                                               ]
                                           }));
                                       }
-                                      else this.props.navigation.navigate('ProfileInitStack')
+                                      else this.props.navigation.navigate('MainStack')
                                   });
                               });
                           })

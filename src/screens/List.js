@@ -2,14 +2,25 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   FlatList,
-  View
+  View,
+  Alert,
+  Dimensions
 } from 'react-native';
-import { initUserlist, getUserlist } from '../actions';
+import { initUserlist,
+  getUserlist,
+  createGroupChannel,
+  initInvite,
+  groupChannelProgress,
+  addGroupChannelItem,
+  onGroupChannelPress,
+} from '../actions';
 import { UserList } from '../UserList';
-import { CardImage, Spinner } from '../components';
+import { CardImage, Spinner, SHeader } from '../components';
 import { connect } from 'react-redux';
 import { sOnPressLike, sGetCurrentUserInfo } from '../subyeonActions';
+import { Header, Icon, Text } from 'react-native-elements';
 
+const { width } = Dimensions.get('window');
 class List extends Component {
 
   state = {
@@ -19,12 +30,35 @@ class List extends Component {
       error: '',
     }
     onEndReached = async () => {
-    await this.props.getUserlist();
+
    };
 
    onRefresh = async () => {
-    await this.props.getUserlist();
+
    }
+
+   onCreateButtonPress = (send) => {
+    const inviteUserIdList = [send]
+    console.log('inviteUserIdList:', inviteUserIdList)
+    Alert.alert(
+              'Create Group Channel',
+              'Please select distinct option.',
+              [
+                  {text: 'Distinct', onPress: () => {
+                      const isDistinct = true;
+                      this.props.createGroupChannel(inviteUserIdList, isDistinct);
+                      console.log("goooossSS")
+                  }},
+                  {text: 'Non-Distinct', onPress: () => {
+                      const isDistinct = false;
+                      this.props.createGroupChannel(inviteUserIdList, isDistinct);
+                  }},
+                  {text: 'Cancel'}
+              ]
+          );
+
+
+    }
 
 
    renderFlatList(isLoading) {
@@ -47,6 +81,8 @@ class List extends Component {
             selfIntro={item.selfIntro}
             age={item.age}
             onPress={() => this.onPressLike(item.uid)}
+            onpress={()=>this.onCreateButtonPress(item.sendId)}
+
           />
         );
       }}
@@ -63,16 +99,25 @@ class List extends Component {
 
    componentDidMount() {
         this.props.initUserlist();
+        this.props.initInvite();
         this.setState({ isLoading: true }, async () => {
           await this.props.getUserlist();
         });
+
     }
 
     componentWillReceiveProps(props){
-      const { userlist, error} = props;
-      console.log(userlist.length)
+      const { userlist, error,channel} = props;
         if (userlist.length > 0 ) {
             this.setState({data: userlist, isLoading: false})
+        }
+        if (channel) {
+          console.log('channel',channel)
+            this.props.groupChannelProgress(true);
+            this.props.addGroupChannelItem(channel);
+            this.props.navigation.navigate('GroupChannel')
+            this.props.onGroupChannelPress(channel.url);
+
         }
     }
 
@@ -87,16 +132,21 @@ class List extends Component {
     return (
       <View>
         <Spinner visible={this.state.isLoading} />
+        <SHeader
+          onLeftPress={()=>this.props.navigation.navigate('Store')}
+          onRightPress={()=>this.props.navigation.navigate('Menu')}
+        />
         {this.renderFlatList()}
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ list  }) => {
+const mapStateToProps = ({ list,groupChannelInvite}) => {
   const { userlist, error } = list;
+  const { channel } = groupChannelInvite;
 
-  return { userlist, error  };
+  return {userlist, error,channel};
 }
 
 const styles = StyleSheet.create({
@@ -107,9 +157,12 @@ const styles = StyleSheet.create({
 
 export default connect(
     mapStateToProps,
-    {
-      initUserlist,
+    { initUserlist,
+      initInvite,
       getUserlist,
-
+      createGroupChannel,
+      groupChannelProgress,
+      addGroupChannelItem,
+      onGroupChannelPress,
     }
 )(List);

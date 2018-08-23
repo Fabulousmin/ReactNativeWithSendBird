@@ -14,3 +14,4 @@ export {
     ListItem
 } from 'react-native-elements';
 export * from './CardImage';
+export * from './SHeader';

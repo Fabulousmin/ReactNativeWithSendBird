@@ -22,16 +22,16 @@ const CardImage = ( props ) => {
             </CardItem>
             <CardItem>
               <Left>
-                <Button
-                  transparent
-                  onPress={props.onPress}
-                  >
+                <Button transparent>
                   <Icon active name="thumbs-up" />
-                  <Text>Likes</Text>
+                  {(props.numOfLikes > 0)? (<Text>{props.numOfLikes}</Text>):(<Text>like</Text>)}
                 </Button>
               </Left>
               <Body>
-                <Button transparent>
+                <Button
+                  transparent
+                  onPress={props.onpress}
+                  >
                   <Icon active name="chatbubbles" />
                   <Text>Message</Text>
                 </Button>

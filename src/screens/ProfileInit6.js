@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { Spinner } from '../components';
 import { updateProfile, initProfile } from '../actions';
+import SendBird from 'sendbird';
 
 const { width } = Dimensions.get('window');
 class ProfileInit6 extends Component {
@@ -12,10 +13,14 @@ class ProfileInit6 extends Component {
   state = { profileUrl: '',
             profileImgData:'',
             selfIntro:'',
+            sendId:'',
+            like:'',
+            liked:'',
             isLoading:false,
           }
 
   _imagePick() {
+    const sb = SendBird.getInstance();
     const pickerOptions = {
      title: '프로필 사진 변경',
      customButtons: [
@@ -42,7 +47,10 @@ class ProfileInit6 extends Component {
       // const source = { uri: 'data:image/jpeg;base64,' + response.data };
       this.setState({
         profileUrl: response.uri ,
-        profileImgData: response.data
+        profileImgData: response.data,
+        sendId: sb.currentUser.userId,
+        like:'',
+        liked:'',
       });
     }
   });
@@ -56,9 +64,9 @@ class ProfileInit6 extends Component {
   async _updateProfile(){
     this.setState({isLoading: true});
     const { sex, age, city, number, nickname } = this.props.navigation.state.params;
-    const { profileUrl, selfIntro } = this.state;
+    const { profileUrl, selfIntro,sendId,like,liked } = this.state;
     if(profileUrl && selfIntro) {
-    const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro, isProfile:'1', likedList:[], likeList:[] };
+    const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro,sendId,isProfile:'1', likedList:[], likeList:[] };
     await this.props.updateProfile(userInfo);}
     else{
     this.setState({isLoading: false});
