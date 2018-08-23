@@ -39,8 +39,8 @@ class List extends Component {
 
    }
 
-   onCreateButtonPress = (send) => {
-    const inviteUserIdList = [send]
+   onCreateButtonPress = (sendId) => {
+    const inviteUserIdList = [sendId]
     console.log('inviteUserIdList:', inviteUserIdList)
     Alert.alert(
               'Create Group Channel',

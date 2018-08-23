@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { Spinner } from '../components';
 import { updateProfile, initProfile } from '../actions';
+import { sbUpdateProfile } from '../sendbirdActions';
 import SendBird from 'sendbird';
 
 const { width } = Dimensions.get('window');
@@ -65,11 +66,13 @@ class ProfileInit6 extends Component {
     const { profileUrl, selfIntro,sendId,like,liked } = this.state;
     if(profileUrl && selfIntro) {
     const userInfo = { sex, age, city, number, nickname, profileUrl, selfIntro, sendId, isProfile:'1', heart:10};
+    sbUpdateProfile(nickname);
     await this.props.updateProfile(userInfo);}
     else{
     this.setState({isLoading: false});
     return
     }
+    sbUpdateProfile(nickname);
   }
 
   componentDidMount() {
