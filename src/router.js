@@ -1,3 +1,5 @@
+import React from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import BlockUser from './screens/BlockUser';
 import Chat from './screens/Chat';
 import GroupChannel from './screens/GroupChannel';
@@ -19,7 +21,6 @@ import Start from './screens/Start';
 import Store from './screens/Store';
 import ChatSelection from './screens/ChatSelection';
 import { StackNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
-
 const LoginStack = StackNavigator({
    Login: { screen: Login }
 }
@@ -59,6 +60,23 @@ const MainTab =  TabNavigator({
             Menu: MenuStack,
   },
 {
+  navigationOptions: ({ navigation }) => ({
+        tabBarIcon: ({ focused, tintColor }) => {
+          const { routeName } = navigation.state;
+          let iconName;
+          if (routeName === 'List') {
+            iconName = `ios-flame${focused ? '' : '-outline'}`;
+          } else if (routeName === 'Chat') {
+            iconName = `ios-chatbubbles${focused ? '' : '-outline'}`;
+          }
+            else if (routeName === 'Store') {
+              iconName = `ios-appstore${focused ? '' : '-outline'}`;
+          }
+          // You can return any component that you like here! We usually use an
+          // icon component from react-native-vector-icons
+          return <Ionicons name={iconName} size={25} color={tintColor} />;
+        },
+      }),
   tabBarOptions: {
     activeTintColor:'#54a0ff',
     inactiveTintColor: '#8395a7'
