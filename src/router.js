@@ -86,12 +86,12 @@ const MainTab =  TabNavigator({
         tabBarIcon: ({ focused, tintColor }) => {
           const { routeName } = navigation.state;
           let iconName;
-          if (routeName === 'List') {
+          if (routeName === 'ListStack') {
             iconName = `ios-flame${focused ? '' : '-outline'}`;
-          } else if (routeName === 'Chat') {
+          } else if (routeName === 'ChatStack') {
             iconName = `ios-chatbubbles${focused ? '' : '-outline'}`;
           }
-            else if (routeName === 'Store') {
+            else if (routeName === 'StoreStack') {
               iconName = `ios-appstore${focused ? '' : '-outline'}`;
           }
           // You can return any component that you like here! We usually use an
