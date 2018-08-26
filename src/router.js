@@ -44,14 +44,13 @@ const MenuStack = StackNavigator({
   Menu: { screen: Menu },
   OpenChannel: { screen: OpenChannel },
   OpenChannelCreate: { screen: OpenChannelCreate },
-  Chat: { screen: Chat },
   Member: { screen: Member },
   BlockUser: { screen: BlockUser },
   GroupChannel: { screen: GroupChannel },
   GroupChannelInvite: { screen: GroupChannelInvite },
 }, {
   initialRouteName: 'Menu',
-  headerMode: 'none',
+
 })
 
 const ListStack = StackNavigator({
@@ -62,10 +61,10 @@ const ListStack = StackNavigator({
 })
 
 const ChatStack = StackNavigator({
-  Chat1: {screen: ChatSelection}
+  Chat1: {screen: ChatSelection},
+  Chat: { screen: Chat },
 },{
   initialRouteName: 'Chat1',
-  headerMode: 'none',
 })
 
 const StoreStack = StackNavigator({
@@ -78,9 +77,9 @@ const StoreStack = StackNavigator({
 
 
 const MainTab =  TabNavigator({
-            List: ListStack,
-            Chat: ChatStack,
-           Store: StoreStack
+       ListStack: ListStack,
+       ChatStack: ChatStack,
+       StoreStack: StoreStack
   },
 {
   navigationOptions: ({ navigation }) => ({
@@ -106,7 +105,6 @@ const MainTab =  TabNavigator({
   },
   tabBarPosition: 'bottom',
   animationEnabled: false,
-  swipeEnabled: true,
 })
 
 const MainStack = SwitchNavigator({

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, FlatList, TouchableHighlight, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { 
-    initGroupChannel, 
-    groupChannelProgress, 
+import {
+    initGroupChannel,
+    groupChannelProgress,
     getGroupChannelList,
     onGroupChannelPress,
     onLeaveChannelPress,
@@ -11,17 +11,17 @@ import {
     clearSelectedGroupChannel,
     createGroupChannelListHandler
 } from '../actions'
-import { 
-    Button, 
-    ListItem, 
-    Avatar, 
+import {
+    Button,
+    ListItem,
+    Avatar,
     Spinner
 } from '../components';
 import Swipeout from 'react-native-swipeout';
-import { 
-    sbCreateGroupChannelListQuery, 
-    sbUnixTimestampToDate, 
-    sbGetChannelTitle 
+import {
+    sbCreateGroupChannelListQuery,
+    sbUnixTimestampToDate,
+    sbGetChannelTitle
 } from '../sendbirdActions';
 
 class GroupChannel extends Component {
@@ -30,7 +30,7 @@ class GroupChannel extends Component {
         return {
             title: 'Group Channel',
             headerLeft: (
-                <Button 
+                <Button
                     containerViewStyle={{marginLeft: 0, marginRight: 0}}
                     buttonStyle={{paddingLeft: 14}}
                     icon={{ name: 'chevron-left', type: 'font-awesome', color: '#7d62d9', size: 18 }}
@@ -39,7 +39,7 @@ class GroupChannel extends Component {
                 />
             ),
             headerRight: (
-                <Button 
+                <Button
                     containerViewStyle={{marginLeft: 0, marginRight: 0}}
                     buttonStyle={{paddingLeft: 0, paddingRight: 14}}
                     iconRight={{ name: 'user-plus', type: 'font-awesome', color: '#7d62d9', size: 18 }}
@@ -67,10 +67,10 @@ class GroupChannel extends Component {
         if (channel) {
             this.props.clearSelectedGroupChannel();
             this.props.navigation.navigate(
-                'Chat', 
-                { 
-                    channelUrl: channel.url, 
-                    title: sbGetChannelTitle(channel), 
+                'Chat',
+                {
+                    channelUrl: channel.url,
+                    title: sbGetChannelTitle(channel),
                     memberCount: channel.memberCount,
                     isOpenChannel: channel.isOpenChannel(),
                     _initListState: this._initJoinState
@@ -88,7 +88,7 @@ class GroupChannel extends Component {
         this.props.createGroupChannelListHandler();
         this._getGroupChannelList(true);
     }
-    
+
     _getGroupChannelList = (init) => {
         this.props.groupChannelProgress(true);
         if (init) {
@@ -100,7 +100,7 @@ class GroupChannel extends Component {
             this.props.getGroupChannelList(this.state.groupChannelListQuery);
         }
     }
-    
+
     _onListItemPress = (channelUrl) => {
         if (!this.state.joinChannel) {
             this.setState({ joinChannel: true }, () => {
@@ -198,7 +198,7 @@ class GroupChannel extends Component {
             ]
         )
     }
-    
+
     _renderList = (rowData) => {
         const channel = rowData.item;
         let swipeoutBtns = [
@@ -257,9 +257,9 @@ function mapStateToProps({ groupChannel })  {
 
 export default connect(
     mapStateToProps,
-    { 
-        initGroupChannel, 
-        groupChannelProgress, 
+    {
+        initGroupChannel,
+        groupChannelProgress,
         getGroupChannelList,
         onGroupChannelPress,
         onLeaveChannelPress,
@@ -271,8 +271,8 @@ export default connect(
 
 const styles = {
     renderTitleViewStyle: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         marginLeft: 10
     },
     renderTitleMemberCountViewStyle: {
@@ -284,7 +284,7 @@ const styles = {
         marginLeft: 4,
     },
     renderTitleTextStyle: {
-        fontSize: 10, 
+        fontSize: 10,
         color: '#878D99'
     },
     unreadCountViewStyle: {
@@ -303,8 +303,8 @@ const styles = {
         color: '#fff'
     },
     renderLastMessageViewStyle: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         marginLeft: 10
     },
     renderLastMessageTextStyle: {

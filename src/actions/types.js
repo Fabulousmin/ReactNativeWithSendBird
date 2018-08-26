@@ -98,3 +98,10 @@ export const USER_UNBLOCK_FAIL = 'user_unblock_fail';
 export const INIT_USERLIST = 'init_userlist';
 export const GET_USERLIST_FAIL = 'get_userlist_fail';
 export const GET_USERLIST_SUCCESS = 'get_userlist_success';
+
+// store
+export const INIT_HEART = 'init_heart';
+export const GET_HEART_SUCCESS = 'get_heart_success';
+export const GET_HEART_FAIL = 'get_heart_fail';
+export const UPDATE_HEART_SUCCESS = 'update_heart_succss';
+export const UPDATE_HEART_FAIL = 'update_heart_fail';

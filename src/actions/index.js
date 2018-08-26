@@ -9,3 +9,4 @@ export * from './blockUserActions';
 export * from './groupChannelActions';
 export * from './groupChannelInviteActions';
 export * from './listActions';
+export * from './store';

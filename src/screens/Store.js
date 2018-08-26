@@ -7,44 +7,86 @@ import {
   ScrollView
 } from 'react-native';
 import { ListItem, Divider, Button, Text } from 'react-native-elements'
+import { connect } from 'react-redux';
+import { initHeart, getHeart, updateHeart } from '../actions';
 import { SHeader } from '../components';
+
+const renderRightButton = (dallars) => {
+  return (
+    <View
+       style={{width:100, height:45, marginRight:15, borderWidth:1,  borderRadius: 10, borderColor: '#00cec9'
+       ,alignItems: 'center', justifyContent: 'center'
+    }}>
+      <Text style={{color: '#00cec9', fontSize: 15}}>US{dallars}$</Text>
+      </View>
+  )
+}
 
 const list = [
   {
-    name: '   2000 하트',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    element: <Button title='US2$' style={{width:100, borderWidth:1, borderRadius: 10, borderColor: '#00cec9'}}  backgroundColor='transparent' color='#00cec9' />
+    name: '   20 하트',
+    element: renderRightButton(2),
+    heart: 20
   },
   {
-    name: '   5000 하트',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    element: <Button title='US5$' style={{width:100, borderWidth:1, borderRadius: 10, borderColor: '#00cec9'}}  backgroundColor='transparent' color='#00cec9' />
+    name: '   50 하트',
+    element:renderRightButton(5),
+    heart: 50
   },
   {
-    name: '   10000 하트',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    element: <Button title='US8$' style={{width:100, borderWidth:1, borderRadius: 10, borderColor: '#00cec9'}}  backgroundColor='transparent' color='#00cec9' />
+    name: '   100 하트',
+    element: renderRightButton(8),
+    heart: 100
   },
   {
-    name: '   20000 하트',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    element: <Button title='US14$' style={{width:100, borderWidth:1, borderRadius: 10, borderColor: '#00cec9'}}  backgroundColor='transparent' color='#00cec9' />
+    name: '   200 하트',
+    element: renderRightButton(14),
+    heart: 200
   },
   {
-    name: '   50000 하트',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      element: <Button title='US30$' style={{width:100, borderWidth:1, borderRadius: 10, borderColor: '#00cec9'}}  backgroundColor='transparent' color='#00cec9' />
+    name: '   500 하트',
+    element: renderRightButton(30),
+    heart: 500
   },
 ]
 
 
-export default class Store extends Component {
+class Store extends Component {
+
+
+  state = {
+    heart: 0,
+    error: '',
+  }
+
+
+  componentDidMount() {
+
+    this.props.initHeart();
+    this.setState(async () => {await this.props.getHeart();});
+
+  }
+
+  componentWillReceiveProps(props) {
+    const { error , heart } = props;
+    if(heart){
+      this.setState({heart: heart});
+    }
+  }
+
+  onButtonBuyHeart = async (heart) => {
+    const currentHeart = this.state.heart;
+    await this.props.updateHeart(currentHeart + heart);
+    await this.props.getHeart();
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <SHeader
-          onLeftPress={()=>this.props.navigation.navigate('Store')}
+          onLeftPress={()=>this.props.navigation.navigate('StoreStack')}
           onRightPress={()=>this.props.navigation.navigate('MenuStack')}
+          heart={this.state.heart}
         />
         <ScrollView>
           <View style={styles.divider}>
@@ -52,7 +94,7 @@ export default class Store extends Component {
             <Text style={styles.subtitle}>매시지를 보내려면 하트가 필요해요</Text>
           </View>
           {
-        list.map((item, i) => (
+          list.map((item, i) => (
           <ListItem
             key={i}
             leftIcon={{type:'font-awesome', name: 'heart', color:'#74b9ff'}}
@@ -60,6 +102,7 @@ export default class Store extends Component {
             containerStyle={{paddingTop: 20, paddingBottom: 20, paddingLeft:10, borderBottomColor: '#dfe6e9'}}
             badge={{ element: item.element }}
             hideChevron
+            onPress={async () => {this.onButtonBuyHeart(item.heart)}}
           />
         ))
         }
@@ -71,7 +114,16 @@ export default class Store extends Component {
     </View>
     );
   }
+
+
 }
+
+const mapStateToProps = ({store}) =>{
+  const { heart, error } = store;
+  return { heart , error };
+}
+
+export default connect(mapStateToProps, {initHeart , getHeart, updateHeart})(Store);
 
 const styles = StyleSheet.create({
   container: {

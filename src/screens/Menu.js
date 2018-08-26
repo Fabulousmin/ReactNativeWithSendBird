@@ -10,7 +10,9 @@ import { Button, HR, Spinner } from '../components';
 import { Header, Icon, Text } from 'react-native-elements';
 
 class Menu extends Component {
-
+  static navigationOptions = ({ navigation }) => {
+    return {header: null}
+  }
     constructor(props) {
         super(props);
         this.state = {

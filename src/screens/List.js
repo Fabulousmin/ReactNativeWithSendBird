@@ -13,7 +13,9 @@ import { initUserlist,
   groupChannelProgress,
   addGroupChannelItem,
   onGroupChannelPress,
-  getCurrentUserInfo
+  getCurrentUserInfo,
+  initHeart,
+  getHeart
 } from '../actions';
 import { UserList } from '../UserList';
 import { CardImage, Spinner, SHeader } from '../components';
@@ -114,7 +116,9 @@ class List extends Component {
 
    componentDidMount() {
         this.props.initUserlist();
+        this.props.initHeart();
         this.props.getCurrentUserInfo();
+        this.props.getHeart();
         this.props.initInvite();
         this.setState({ isLoading: true }, async () => {
           await this.props.getUserlist();
@@ -123,9 +127,9 @@ class List extends Component {
     }
 
     componentWillReceiveProps(props){
-      const { userlist, error, channel, userInfo} = props;
+      const { userlist, error, channel, userInfo, heart} = props;
         if(userInfo){
-        this.setState({heart: userInfo.heart})
+        this.setState({heart: heart})
       }
         if (userlist.length > 0 ) {
             this.setState({data: userlist, isLoading: false})
@@ -162,12 +166,12 @@ class List extends Component {
   }
 }
 
-const mapStateToProps = ({ list, groupChannelInvite, profile}) => {
+const mapStateToProps = ({ list, groupChannelInvite, profile , store}) => {
   const { userlist, error } = list;
   const { channel } = groupChannelInvite;
   const { userInfo } = profile;
-
-  return {userlist, error, channel, userInfo};
+  const { heart } = store;
+  return {userlist, error, channel, userInfo, heart};
 }
 
 const styles = StyleSheet.create({
@@ -185,6 +189,8 @@ export default connect(
       groupChannelProgress,
       addGroupChannelItem,
       onGroupChannelPress,
-      getCurrentUserInfo
+      getCurrentUserInfo,
+      initHeart,
+      getHeart
     }
 )(List);
