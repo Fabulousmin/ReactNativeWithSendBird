@@ -17,6 +17,12 @@ import { initUserlist,
   initHeart,
   getHeart
 } from '../actions';
+import {sbGetChannelTitle,
+  sbCreateGroupChannelListQuery,
+  sbGetGroupChannelList,
+  sbCreateGroupChannel,
+} from '../sendbirdActions';
+import firebase from '@firebase/app'
 import { UserList } from '../UserList';
 import { CardImage, Spinner, SHeader } from '../components';
 import { connect } from 'react-redux';
@@ -34,34 +40,68 @@ class List extends Component {
       heart: null,
     }
     onEndReached = async () => {
-
    };
-
    onRefresh = async () => {
-
    }
+
+   async checkChannel(sendId){
+     const arr = [];
+     const query = sbCreateGroupChannelListQuery();
+     const channelList = await sbGetGroupChannelList(query);
+     const channel = await sbCreateGroupChannel([sendId],true)
+     const channelUrl = channel.url
+     for (var i=0; i<channelList.length;i++){
+       arr.push(channelList[i].lastMessage.channelUrl)
+     }
+    const check = arr.includes(channelUrl)
+    return check
+   }
+
 
    onCreateButtonPress = (sendId) => {
     const inviteUserIdList = [sendId]
-    console.log('inviteUserIdList:', inviteUserIdList)
-    Alert.alert(
-              'Create Group Channel',
-              'Please select distinct option.',
-              [
-                  {text: 'Distinct', onPress: () => {
-                      const isDistinct = true;
-                      this.props.createGroupChannel(inviteUserIdList, isDistinct);
-                      console.log("goooossSS")
-                  }},
-                  {text: 'Non-Distinct', onPress: () => {
-                      const isDistinct = false;
-                      this.props.createGroupChannel(inviteUserIdList, isDistinct);
-                  }},
-                  {text: 'Cancel'}
-              ]
-          );
+    const arr=[];
+    const currentuser  = firebase.auth().currentUser.uid
+    const database = firebase.database();
+    const heart = database.ref().child("users/"+currentuser)
 
-
+    this.checkChannel(sendId)
+      .then((check) =>{
+        if(check == false){
+    heart.on('child_added',function(snap){
+      arr.push(snap.val())})
+    const userheart = arr[2]
+    if (userheart >= 5) {
+       Alert.alert(
+         '채팅방 열기',
+          '하트 5개가 사용됩니다',
+          [
+              {text: '확인', onPress: () => {
+                const updatedheart = userheart - 5
+                database.ref('users/'+currentuser).update({heart:updatedheart})
+                const isDistinct = true;
+                this.props.createGroupChannel(inviteUserIdList, isDistinct);
+              }},
+              {text: '취소'}
+          ])
+    }
+    else{
+      Alert.alert(
+                '하트가 부족합니다.',
+                '채팅을 하기 위해서는 하트가 필요합니다.',
+                [
+                    {text: '충전하기', onPress: () => {
+                        this.props.navigation.navigate('Store')
+                    }},
+                    {text: '취소'}
+                ]
+            );
+          }
+        }
+        else{
+            this.props.createGroupChannel(inviteUserIdList, true);
+        }
+      })
     }
 
     getUpdatedBefore(updatedAt) {
