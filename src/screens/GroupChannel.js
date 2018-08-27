@@ -28,27 +28,10 @@ class GroupChannel extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params } = navigation.state;
         return {
-            title: 'Group Channel',
-            headerLeft: (
-                <Button
-                    containerViewStyle={{marginLeft: 0, marginRight: 0}}
-                    buttonStyle={{paddingLeft: 14}}
-                    icon={{ name: 'chevron-left', type: 'font-awesome', color: '#7d62d9', size: 18 }}
-                    backgroundColor='transparent'
-                    onPress={ () => navigation.goBack() }
-                />
-            ),
-            headerRight: (
-                <Button
-                    containerViewStyle={{marginLeft: 0, marginRight: 0}}
-                    buttonStyle={{paddingLeft: 0, paddingRight: 14}}
-                    iconRight={{ name: 'user-plus', type: 'font-awesome', color: '#7d62d9', size: 18 }}
-                    backgroundColor='transparent'
-                    onPress={ () => { navigation.navigate('GroupChannelInvite', { title: 'Group Channel Create', channelUrl: null }) } }
-                />
-            )
+            title: '채팅방'
         }
     }
+
 
     constructor(props) {
         super(props);
@@ -125,14 +108,6 @@ class GroupChannel extends Component {
             <View style={styles.renderTitleViewStyle}>
                 <View style={{flexDirection: 'row'}}>
                     <Text>{sbGetChannelTitle(channel)}</Text>
-                    <View style={styles.renderTitleMemberCountViewStyle}>
-                        <Text style={styles.renderTitleTextStyle}>{channel.memberCount}</Text>
-                    </View>
-                </View>
-                <View>
-                    <Text style={styles.renderTitleTextStyle}>
-                        {this._renderLastMessageTime(lastMessage)}
-                    </Text>
                 </View>
             </View>
         )
@@ -198,9 +173,12 @@ class GroupChannel extends Component {
             ]
         )
     }
-
     _renderList = (rowData) => {
         const channel = rowData.item;
+        // const titles = sbGetChannelTitle(channel)
+        // const real = titles.replace(" ","").split(',')
+        // real.splice(real.indexOf('trtkkw'),1);
+        // arr.push(real[0])
         let swipeoutBtns = [
             {
                 text: 'Leave',
@@ -223,7 +201,7 @@ class GroupChannel extends Component {
                     key={channel.url}
                     avatar={<Avatar source={{uri: channel.coverUrl}} />}
                     title={this._renderTitle(channel)}
-                    titleStyle={{fontWeight: '500', fontSize: 16}}
+                    titleStyle={{fontWeight: '500', fontSize: 30}}
                     subtitle={this._renderLastMessage(channel)}
                     subtitleStyle={{fontWeight: '300', fontSize: 11}}
                     onPress={ () => this._onListItemPress(channel.url) }
@@ -231,6 +209,7 @@ class GroupChannel extends Component {
             </Swipeout>
         )
     }
+
 
     render() {
         return (
