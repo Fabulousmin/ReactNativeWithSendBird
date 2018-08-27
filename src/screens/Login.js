@@ -3,10 +3,9 @@ import { View, Image, AsyncStorage, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { FormLabel, FormInput, FormValidationMessage, Button, Text } from 'react-native-elements'
 import { initLogin, sendbirdLogin, kakaoLogin, getCurrentUserInfo } from '../actions';
-import {
-    sbRegisterPushToken
-  } from '../sendbirdActions';
+import {sbRegisterPushToken,sbCreateUserListQuery,sbGetUserList,sbGetCurrentInfo} from '../sendbirdActions';
 import { Spinner } from '../components';
+import SendBird from 'sendbird';
 
 
 class Login extends Component {
@@ -27,26 +26,43 @@ class Login extends Component {
         this.props.initLogin();
       }
 
-    componentWillReceiveProps(props) {
-        async () => await getCurrentUserInfo();
-        let { user, error, userInfo } = props;
-        if (user) {
-            AsyncStorage.getItem('pushToken', (err, pushToken) => {
-                if (pushToken) {
-                    sbRegisterPushToken(pushToken)
-                        .then(res => {})
-                        .catch(err => {});
+  componentWillReceiveProps(props) {
+      async () => await getCurrentUserInfo();
+      let { user, error, userInfo } = props;
+      if (user) {
+          AsyncStorage.getItem('pushToken', (err, pushToken) => {
+              if (pushToken) {
+                  sbRegisterPushToken(pushToken)
+                      .then(res => {})
+                      .catch(err => {})
                 }
-
-                if(userInfo){
-                this.props.navigation.navigate('MainStack')}
-                else this.props.navigation.navigate('ProfileInitStack')
-                    })
-        if (error) {
-            this.setState({ isLoading: false });
-        }
+              this.checkUsers()
+              .then((currentUserNickname)=>{
+                if(currentUserNickname!=="") {
+                  this.props.navigation.navigate('MainStack')
+                }
+                else{
+                  this.props.navigation.navigate('ProfileInitStack')
+                }
+                  })
+                })
+      if (error) {
+          this.setState({ isLoading: false });
+      }
     }
   }
+
+
+
+
+  async checkUsers(){
+    const sb = SendBird.getInstance();
+    const currentUserNickname = sb.currentUser.nickname
+    console.log('유저네임스',currentUserNickname)
+    return currentUserNickname
+  }
+
+
 
 
     _onUserIdChanged = (userId) => {
