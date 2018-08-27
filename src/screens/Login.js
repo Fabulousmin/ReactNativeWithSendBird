@@ -8,6 +8,7 @@ import { Spinner } from '../components';
 import SendBird from 'sendbird';
 
 
+
 class Login extends Component {
     static navigationOptions = {
         header: null
@@ -26,43 +27,36 @@ class Login extends Component {
         this.props.initLogin();
       }
 
-  componentWillReceiveProps(props) {
-      async () => await getCurrentUserInfo();
-      let { user, error, userInfo } = props;
-      if (user) {
-          AsyncStorage.getItem('pushToken', (err, pushToken) => {
-              if (pushToken) {
-                  sbRegisterPushToken(pushToken)
-                      .then(res => {})
-                      .catch(err => {})
-                }
-              this.checkUsers()
-              .then((currentUserNickname)=>{
-                if(currentUserNickname!=="") {
-                  this.props.navigation.navigate('MainStack')
-                }
-                else{
-                  this.props.navigation.navigate('ProfileInitStack')
-                }
-                  })
-                })
-      if (error) {
-          this.setState({ isLoading: false });
+      componentWillReceiveProps(props) {
+          async () => await getCurrentUserInfo();
+          let { user, error, userInfo } = props;
+          if (user) {
+              AsyncStorage.getItem('pushToken', (err, pushToken) => {
+                  if (pushToken) {
+                      sbRegisterPushToken(pushToken)
+                          .then(res => {})
+                          .catch(err => {})
+                    }
+                  this.checkUsers()
+                  .then((currentUserNickname)=>{
+                    if(currentUserNickname!=="") {
+                      this.props.navigation.navigate('MainStack')
+                    }
+                    else{
+                      this.props.navigation.navigate('ProfileInitStack')
+                    }
+                      })
+                    })
+          if (error) {
+              this.setState({ isLoading: false });
+          }
+        }
       }
+      async checkUsers(){
+      const sb = SendBird.getInstance();
+      const currentUserNickname = sb.currentUser.nickname
+      return currentUserNickname
     }
-  }
-
-
-
-
-  async checkUsers(){
-    const sb = SendBird.getInstance();
-    const currentUserNickname = sb.currentUser.nickname
-    console.log('유저네임스',currentUserNickname)
-    return currentUserNickname
-  }
-
-
 
 
     _onUserIdChanged = (userId) => {

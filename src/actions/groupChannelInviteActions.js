@@ -1,4 +1,4 @@
-import { 
+import {
     INIT_INVITE,
     USER_LIST_SUCCESS,
     USER_LIST_FAIL,
@@ -7,11 +7,11 @@ import {
     INVITE_GROUP_CHANNEL_SUCCESS,
     INVITE_GROUP_CHANNEL_FAIL
 } from './types';
-import { 
-    sbGetUserList, 
+import {
+    sbGetUserList,
     sbGetGroupChannel,
     sbCreateGroupChannel,
-    sbInviteGroupChannel 
+    sbInviteGroupChannel
 } from '../sendbirdActions';
 
 export const initInvite = () => {
@@ -54,7 +54,8 @@ export const createGroupChannel = (inviteUserIdList, isDistinct) => {
     return (dispatch) => {
         sbCreateGroupChannel(inviteUserIdList, isDistinct)
         .then((channel) => {
-            dispatch({ 
+          console.log('채널',channel)
+            dispatch({
                 type: CREATE_GROUP_CHANNEL_SUCCESS,
                 channel: channel
             });

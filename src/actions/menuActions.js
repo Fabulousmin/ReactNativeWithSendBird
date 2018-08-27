@@ -4,7 +4,7 @@ import {
 } from './types';
 import { sbDisconnect } from '../sendbirdActions';
 
-const firebase = require('firebase');
+import firebase from '@firebase/app'
 
 export const initMenu = () => {
     return { type: INIT_MENU };

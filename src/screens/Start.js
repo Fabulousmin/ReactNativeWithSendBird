@@ -11,7 +11,7 @@ import { getCurrentUserInfo } from '../actions';
 
 
 const { width , height } = Dimensions.get('window');
-const firebase = require('firebase');
+import firebase from '@firebase/app'
 class Start extends Component {
     constructor(props) {
         super(props);

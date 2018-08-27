@@ -17,18 +17,17 @@ import { initUserlist,
   initHeart,
   getHeart
 } from '../actions';
+import { UserList } from '../UserList';
+import { CardImage, Spinner, SHeader } from '../components';
 import {sbGetChannelTitle,
   sbCreateGroupChannelListQuery,
   sbGetGroupChannelList,
   sbCreateGroupChannel,
 } from '../sendbirdActions';
-import firebase from '@firebase/app'
-import { UserList } from '../UserList';
-import { CardImage, Spinner, SHeader } from '../components';
 import { connect } from 'react-redux';
 import { sOnPressLike, sGetCurrentUserInfo } from '../subyeonActions';
 import { Header, Icon, Text } from 'react-native-elements';
-
+import firebase from '@firebase/app'
 const { width } = Dimensions.get('window');
 class List extends Component {
 
@@ -40,8 +39,11 @@ class List extends Component {
       heart: null,
     }
     onEndReached = async () => {
+
    };
+
    onRefresh = async () => {
+
    }
 
    async checkChannel(sendId){
@@ -60,11 +62,11 @@ class List extends Component {
 
    onCreateButtonPress = (sendId) => {
     const inviteUserIdList = [sendId]
+    console.log('보자아이디',sendId)
     const arr=[];
     const currentuser  = firebase.auth().currentUser.uid
     const database = firebase.database();
     const heart = database.ref().child("users/"+currentuser)
-
     this.checkChannel(sendId)
       .then((check) =>{
         if(check == false){
@@ -104,6 +106,7 @@ class List extends Component {
       })
     }
 
+
     getUpdatedBefore(updatedAt) {
       const now = new Date();
       const before = new Date(updatedAt);
@@ -137,7 +140,6 @@ class List extends Component {
             number={item.number}
             selfIntro={item.selfIntro}
             age={item.age}
-            onPress={() => this.onPressLike(item.uid)}
             onpress={()=>this.onCreateButtonPress(item.sendId)}
             updatedAt={this.getUpdatedBefore(item.updatedAt)}
           />
@@ -156,10 +158,10 @@ class List extends Component {
 
    componentDidMount() {
         this.props.initUserlist();
+        this.props.initInvite();
         this.props.initHeart();
         this.props.getCurrentUserInfo();
         this.props.getHeart();
-        this.props.initInvite();
         this.setState({ isLoading: true }, async () => {
           await this.props.getUserlist();
         });
@@ -175,7 +177,6 @@ class List extends Component {
             this.setState({data: userlist, isLoading: false})
         }
         if (channel) {
-          console.log('channel',channel)
             this.props.groupChannelProgress(true);
             this.props.addGroupChannelItem(channel);
             this.props.navigation.navigate('GroupChannel')

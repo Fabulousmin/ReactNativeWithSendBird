@@ -69,6 +69,7 @@ static navigationOptions = ({ navigation }) => {
             this.props.clearCreatedOpenChannel();
         });
     }
+
     if (channel) {
           this.props.clearSeletedOpenChannel();
           this.props.navigation.navigate(
@@ -85,7 +86,6 @@ static navigationOptions = ({ navigation }) => {
 
     if (groupChannel.channel){
       this.props.clearSelectedGroupChannel();
-      this.setState();
       this.props.navigation.navigate(
           'Chat',
           {

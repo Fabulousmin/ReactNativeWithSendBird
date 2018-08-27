@@ -11,7 +11,7 @@ class BlockUser extends Component {
         return {
             title: 'Block Users',
             headerLeft: (
-                <Button 
+                <Button
                     containerViewStyle={{marginLeft: 0, marginRight: 0}}
                     buttonStyle={{paddingLeft: 14}}
                     icon={{ name: 'chevron-left', type: 'font-awesome', color: '#7d62d9', size: 18 }}
@@ -38,8 +38,8 @@ class BlockUser extends Component {
 
     componentWillReceiveProps(props) {
         const { list, unblockedUserId } = props;
-        
-        if (list !== this.props.list) {        
+
+        if (list !== this.props.list) {
             const newList = [...this.state.list, ...list];
             this.setState({ isLoading: false, list: newList, blockUserList: ds.cloneWithRows(newList) });
         }
@@ -88,7 +88,7 @@ class BlockUser extends Component {
             }
         })
     }
-    
+
     _renderList = (rowData) => {
         return (
             <ListItem
@@ -96,9 +96,9 @@ class BlockUser extends Component {
                 component={TouchableHighlight}
                 containerStyle={{backgroundColor: '#fff'}}
                 avatar={(
-                    <Avatar 
+                    <Avatar
                         rounded
-                        source={rowData.profileUrl ? {uri: rowData.profileUrl} : require('../img/icon_sb_68.png')} 
+                        source={rowData.profileUrl ? {uri: rowData.profileUrl} : require('../img/icon_sb_68.png')}
                     />
                 )}
                 title={rowData.nickname}

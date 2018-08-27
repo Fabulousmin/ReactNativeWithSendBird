@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
-import { 
-    View, 
-    Text, 
-    ListView, 
+import {
+    View,
+    Text,
+    ListView,
     TouchableHighlight,
-    Alert 
+    Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { 
-    initInvite, 
-    getUserList, 
-    createGroupChannel, 
+import {
+    initInvite,
+    getUserList,
+    createGroupChannel,
     inviteGroupChannel,
     groupChannelProgress,
     addGroupChannelItem,
     onGroupChannelPress,
     getChannelTitle
 } from '../actions';
-import { 
-    Button, 
-    Spinner, 
-    ListItem, 
+import {
+    Button,
+    Spinner,
+    ListItem,
     Avatar,
-    Icon 
+    Icon
 } from '../components';
 import { sbCreateUserListQuery } from '../sendbirdActions';
 
@@ -32,7 +32,7 @@ class GroupChannelInvite extends Component {
         return {
             title: `${params.title}`,
             headerLeft: (
-                <Button 
+                <Button
                     containerViewStyle={{marginLeft: 0, marginRight: 0}}
                     buttonStyle={{paddingLeft: 14}}
                     icon={{ name: 'chevron-left', type: 'font-awesome', color: '#7d62d9', size: 18 }}
@@ -41,7 +41,7 @@ class GroupChannelInvite extends Component {
                 />
             ),
             headerRight: (
-                <Button 
+                <Button
                     containerViewStyle={{marginLeft: 0, marginRight: 0}}
                     buttonStyle={{paddingRight: 14}}
                     color={'#7d62d9'}
@@ -65,7 +65,7 @@ class GroupChannelInvite extends Component {
         };
     }
 
-    
+
     componentDidMount() {
         this._initInvite();
         this.props.navigation.setParams({ handleHeaderRight: this._onCreateButtonPress });
@@ -78,7 +78,7 @@ class GroupChannelInvite extends Component {
         if (list !== this.props.list) {
             this.setState({ isLoading: false }, () => {
                 const newList = [
-                    ...this.state.list, 
+                    ...this.state.list,
                     ...(list.map((user) => {
                         user['isSelected'] = false;
                         return user;
@@ -193,18 +193,18 @@ class GroupChannelInvite extends Component {
                 containerStyle={{backgroundColor: '#fff'}}
                 key={rowData.userId}
                 avatar={(
-                    <Avatar 
+                    <Avatar
                         rounded
-                        source={rowData.profileUrl ? {uri: rowData.profileUrl} : require('../img/icon_sb_68.png')} 
+                        source={rowData.profileUrl ? {uri: rowData.profileUrl} : require('../img/icon_sb_68.png')}
                     />
                 )}
                 title={rowData.nickname}
                 titleStyle={{fontWeight: '500', fontSize: 16, marginLeft: 8}}
                 leftIcon={(
-                    <Icon 
+                    <Icon
                         containerStyle={{padding: 0, margin: 0, marginLeft: 4, marginRight: 8}}
                         iconStyle={{padding: 0, margin: 0}}
-                        name='check-circle-o' 
+                        name='check-circle-o'
                         type='font-awesome'
                         color={rowData.isSelected ? '#6741D9' : '#e3e3e3'}
                         size={18}
@@ -224,7 +224,7 @@ class GroupChannelInvite extends Component {
             </View>
         );
     }
-    
+
     render() {
         return (
             <View style={styles.containerStyle}>
@@ -241,7 +241,7 @@ class GroupChannelInvite extends Component {
                 </View>
 
                 <View style={styles.listTitleViewStyle}>
-                    <Text style={styles.listTitleTextStyle}>User List</Text> 
+                    <Text style={styles.listTitleTextStyle}>User List</Text>
                 </View>
 
                 <View style={{}}>
@@ -268,11 +268,11 @@ function mapStateToProps({ groupChannelInvite }) {
 }
 
 export default connect(
-    mapStateToProps, 
-    { 
-        initInvite, 
-        getUserList, 
-        createGroupChannel, 
+    mapStateToProps,
+    {
+        initInvite,
+        getUserList,
+        createGroupChannel,
         inviteGroupChannel,
         groupChannelProgress,
         addGroupChannelItem,
@@ -284,18 +284,18 @@ export default connect(
 const styles = {
     selectedUserListViewStyle: {
         flexDirection: 'column',
-        width: 40, 
+        width: 40,
         height: 40,
         paddingTop: 6,
         marginRight: 8
     },
     containerStyle: {
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
         flex: 1
     },
     listTitleViewStyle: {
-        backgroundColor: '#DEE1E6', 
-        paddingLeft: 14, 
+        backgroundColor: '#DEE1E6',
+        paddingLeft: 14,
         paddingTop: 4,
         paddingBottom: 4,
     },

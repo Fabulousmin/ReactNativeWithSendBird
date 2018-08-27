@@ -1,89 +1,50 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage, ScrollView, ImageBackground, Dimensions } from 'react-native';
-import { Picker } from 'native-base'
+import { View, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
-import { sendbirdLogout, initMenu, fbLogOut, initProfile, getCurrentUserInfo, updateUserInfo } from '../actions';
+import { sendbirdLogout, initMenu, fbLogOut } from '../actions';
 import {
     sbUnregisterPushToken
   } from '../sendbirdActions';
-import ImagePicker from 'react-native-image-picker';
 import { NavigationActions } from 'react-navigation';
-import { HR, Spinner } from '../components';
-import { Header, Icon, Text, Button, ListItem, List } from 'react-native-elements';
-
-
-const {width, height} = Dimensions.get('window')
+import { Button, HR, Spinner } from '../components';
+import { Header, Icon, Text } from 'react-native-elements';
 
 class Menu extends Component {
   static navigationOptions = ({ navigation }) => {
     return {header: null}
   }
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false
+        };
+    }
 
-    state = {
-            isLoading: false,
-            profileUrl:'',
-            profileImgData:'',
-            sex:'',
-            age:'',
-            selfIntro:'',
-            city:'',
-            number:'',
-            nickname:'',
-          }
-
-          _imagePick() {
-            const pickerOptions = {
-              title: '프로필 사진 변경',
-              customButtons: [
-              ],
-              storageOptions: {
-                skipBackup: true,
-                path: 'subyeon/images',
-              },
-              quility: 0.5,
-              allowsEditing: true,
-            };
-
-            ImagePicker.showImagePicker(pickerOptions, (response) => {
-            console.log('Response = ', response);
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-              console.log('User tapped custom button: ', response.customButton);
-            }
-            else {
-              this.setState({
-                profileUrl: response.uri,
-                profileImgData: response.data
-              })
-            }
-            });
-            }
-
-    async componentDidMount() {
-        this.props.initProfile();
+    componentDidMount() {
         this.props.initMenu();
-        await this.props.getCurrentUserInfo()
     }
 
     componentWillReceiveProps(props) {
-      const { isDisconnected, userInfo } = props;
-      if(userInfo) {
-        const { profileUrl, sex, age, selfIntro, city, number, nickname} = userInfo;
-        this.setState({
-          profileUrl, sex, age, selfIntro, city, number, nickname
-        })
-      }
       AsyncStorage.getItem("user", (err, result) => {
             if(!result){
             this.props.navigation.navigate('Start');
           }
         }
       )
+        }
+
+
+
+    _onProfileButtonPress = () => {
+        this.props.navigation.navigate('Profile');
+    }
+
+    _onOpenChannelPress = () => {
+        this.props.navigation.navigate('OpenChannel');
+    }
+
+    _onGroupChannelPress = () => {
+        this.props.navigation.navigate('GroupChannel');
     }
 
     _onDisconnectButtonPress = () => {
@@ -96,47 +57,6 @@ class Menu extends Component {
                .catch(err => {});
         });
     }
-
-    _onSaveButtonPress= () => {
-      return
-    }
-
-    _renderList = () => {
-      const list = [
-        {
-          title: '닉네임',
-          icon: {type: 'font-awesome', name: 'user', color: '#b2bec3'},
-          value: this.state.nickname,
-          textInput: false
-        },
-        {
-          title: '성별',
-          icon: {type: 'font-awesome', name: 'transgender', color: '#b2bec3'},
-          value: this.state.sex,
-          textInput: false
-        },
-        {
-          title: '나이',
-          icon: {type: 'font-awesome', name: 'sort-numeric-desc', color: '#b2bec3'},
-          value: this.state.age,
-          textInput: false
-        }
-      ]
-
-      return(<List containerStyle={{marginBottom: 10}}>
-                  {
-          list.map((item) => (
-            <ListItem
-              leftIcon={item.icon}
-              key={item.title}
-              title={item.title}
-              rightTitle={<Text >{item.value}</Text>}
-            />
-          ))
-          }
-          </List>)
-    }
-
 
 
 
@@ -156,63 +76,60 @@ class Menu extends Component {
                   {
                    <Text style={{color:'white', fontWeight:'600'}}>설정</Text>
                   }
-                  rightComponent={
-                    <Text onPress={() => this._onSaveButtonPress()} style={{color:'white'}}>저장</Text>
-                  }
                   backgroundColor='#74b9ff'
                 />
-                <ScrollView>
-                  <ImageBackground
-                    source={this.state.profileUrl ? {uri:this.state.profileUrl} : require('../img/default.png')}
-                   style={{width:width, height: 300, flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end'}}
-                  >
-                    <View
-                     style={{marginRight: 20, marginBottom:20}}
-                    >
-                      <Button
-                        title='사진변경'
-                        leftIcon={{type:'font-awesome', name:'user'}}
-                        backgroundColor='#00cec9'
-                        borderRadius={10}
-                        onPress={this._imagePick.bind(this)}
-                      />
-                    </View>
-                  </ImageBackground>
-                  {this._renderList()}
-                  <Picker
-                    note
-                    mode="dropdown"
-                    style={{ width: 120 }}
-                    selectedValue={this.state.selected}
-                  >
-                    <Picker.Item label="Wallet" value="key0" />
-                    <Picker.Item label="ATM Card" value="key1" />
-                    <Picker.Item label="Debit Card" value="key2" />
-                    <Picker.Item label="Credit Card" value="key3" />
-                    <Picker.Item label="Net Banking" value="key4" />
-                  </Picker>
-                  <Button
-                      containerViewStyle={styles.menuViewStyle}
-                      buttonStyle={styles.buttonStyle}
-                      backgroundColor='#fff'
-                      color='#000000'
-                      icon={{name: 'sign-out', type: 'font-awesome' , color: '#000000', size: 16}}
-                      title='로그아웃'
-                      onPress={this._onDisconnectButtonPress}
-                  />
-                </ScrollView>
+                <Button
+                    containerViewStyle={styles.menuViewStyle}
+                    buttonStyle={styles.buttonStyle}
+                    backgroundColor='#fff'
+                    color='#6e5baa'
+                    icon={{name: 'user', type: 'font-awesome' , color: '#6e5baa', size: 16}}
+                    title='프로필 설정'
+                    onPress={this._onProfileButtonPress}
+                />
+                <HR />
+                <Button
+                    containerViewStyle={styles.menuViewStyle}
+                    buttonStyle={styles.buttonStyle}
+                    backgroundColor='#fff'
+                    color='#6e5baa'
+                    icon={{name: 'slack', type: 'font-awesome' , color: '#6e5baa', size: 16}}
+                    title='오픈채팅'
+                    onPress={this._onOpenChannelPress}
+                />
+                <HR />
+                <Button
+                    containerViewStyle={styles.menuViewStyle}
+                    buttonStyle={styles.buttonStyle}
+                    backgroundColor='#fff'
+                    color='#6e5baa'
+                    icon={{name: 'users', type: 'font-awesome' , color: '#6e5baa', size: 16}}
+                    title='1:1 채팅'
+                    onPress={this._onGroupChannelPress}
+                />
+                <HR />
+                <Button
+                    containerViewStyle={styles.menuViewStyle}
+                    buttonStyle={styles.buttonStyle}
+                    backgroundColor='#fff'
+                    color='#7d62d9'
+                    color='#6e5baa'
+                    icon={{name: 'sign-out', type: 'font-awesome' , color: '#6e5baa', size: 16}}
+                    title='로그아웃'
+                    onPress={this._onDisconnectButtonPress}
+                />
+                <HR />
             </View>
         )
     }
 }
 
-function mapStateToProps({ menu, profile }) {
+function mapStateToProps({ menu }) {
     const { isDisconnected } = menu;
-    const { userInfo } = profile;
-    return { isDisconnected, userInfo };
+    return { isDisconnected };
 };
 
-export default connect(mapStateToProps, { sendbirdLogout, initMenu, fbLogOut, initProfile, getCurrentUserInfo, updateUserInfo })(Menu);
+export default connect(mapStateToProps, { sendbirdLogout, initMenu, fbLogOut })(Menu);
 
 const styles = {
     containerViewStyle: {

@@ -32,4 +32,3 @@ export const onUnblockUserPress = (unblockedUserId) => {
         .catch((error) => dispatch({ type: USER_UNBLOCK_FAIL }))
     }
 }
-

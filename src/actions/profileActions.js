@@ -9,7 +9,7 @@ import {
 import { sbGetCurrentInfo, sbUpdateProfile } from '../sendbirdActions';
 import { sUpdateProfile, sUploadImage, sGetCurrentUserInfo } from '../subyeonActions';
 
-const firebase = require('firebase');
+import firebase from '@firebase/app'
 
 export const initProfile = () => {
     return { type: INIT_PROFILE }

@@ -1,4 +1,4 @@
-import { 
+import {
     INIT_CHAT_SCREEN,
     CREATE_CHAT_HANDLER_SUCCESS,
     CREATE_CHAT_HANDLER_FAIL,
@@ -17,7 +17,7 @@ import {
     SEND_TYPING_START_FAIL,
     SEND_TYPING_END_SUCCESS,
     SEND_TYPING_END_FAIL,
-    
+
     MESSAGE_RECEIVED,
     MESSAGE_UPDATED,
     MESSAGE_DELETED,
@@ -26,11 +26,11 @@ import {
     READ_RECEIPT_UPDATED
 } from './types';
 
-import { 
-    sbGetOpenChannel, 
-    sbOpenChannelEnter, 
+import {
+    sbGetOpenChannel,
+    sbOpenChannelEnter,
     sbGetChannelTitle,
-    sbGetMessageList, 
+    sbGetMessageList,
     sbSendTextMessage,
     sbSendFileMessage,
     sbUserBlock ,
@@ -82,11 +82,11 @@ export const getChannelTitle = (channelUrl, isOpenChannel) => {
 export const createChatHandler = (channelUrl, isOpenChannel) => {
     return (dispatch) => {
         if (isOpenChannel) {
-            sbGetOpenChannel(channelUrl) 
+            sbGetOpenChannel(channelUrl)
             .then((channel) => {
                 sbOpenChannelEnter(channel)
-                .then((channel) => { 
-                    registerOpenChannelHandler(channelUrl, dispatch); 
+                .then((channel) => {
+                    registerOpenChannelHandler(channelUrl, dispatch);
                     dispatch({ type: CREATE_CHAT_HANDLER_SUCCESS });
                 })
                 .catch( (error) => dispatch({ type: CREATE_CHAT_HANDLER_FAIL }) );
@@ -136,7 +136,7 @@ const registerCommonHandler = (channelHandler, channelUrl, dispatch) => {
 const registerOpenChannelHandler = (channelUrl, dispatch) => {
     const sb = SendBird.getInstance();
     let channelHandler = new sb.ChannelHandler();
-    
+
     registerCommonHandler(channelHandler, channelUrl, dispatch);
 
     channelHandler.onUserEntered = (channel, user) => {
@@ -164,7 +164,7 @@ const registerOpenChannelHandler = (channelUrl, dispatch) => {
 const registerGroupChannelHandler = (channelUrl, dispatch) => {
     const sb = SendBird.getInstance();
     let channelHandler = new sb.ChannelHandler();
-    
+
     registerCommonHandler(channelHandler, channelUrl, dispatch);
 
     channelHandler.onUserJoined = (channel, user) => {
@@ -185,20 +185,20 @@ const registerGroupChannelHandler = (channelUrl, dispatch) => {
             });
         }
     }
-    channelHandler.onReadReceiptUpdated =  (channel) => { 
+    channelHandler.onReadReceiptUpdated =  (channel) => {
         if (channel.url === channelUrl) {
             dispatch({ type: READ_RECEIPT_UPDATED })
         }
     };
-    channelHandler.onTypingStatusUpdated =  (channel) => { 
+    channelHandler.onTypingStatusUpdated =  (channel) => {
         if (channel.url === channelUrl) {
             const typing = sbIsTyping(channel);
-            dispatch({ 
+            dispatch({
                 type: TYPING_STATUS_UPDATED,
                 typing: typing
             });
         }
-    }; 
+    };
 
     sb.addChannelHandler(channelUrl, channelHandler);
 }
@@ -243,7 +243,7 @@ const sendTextMessage = (dispatch, channel, textMessage) => {
         if (error) {
             dispatch({ type: SEND_MESSAGE_FAIL });
         } else {
-            dispatch({ 
+            dispatch({
                 type: SEND_MESSAGE_SUCCESS,
                 message: message
             });
@@ -287,7 +287,7 @@ const sendFileMessage = (dispatch, channel, file) => {
             dispatch({ type: SEND_MESSAGE_FAIL });
             return;
         } else {
-            dispatch({ 
+            dispatch({
                 type: SEND_MESSAGE_SUCCESS,
                 message: message
             });

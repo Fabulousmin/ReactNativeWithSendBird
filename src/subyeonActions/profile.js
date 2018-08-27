@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
-import firebase from 'firebase';
+import firebase from '@firebase/app'
 
 
 const Blob = RNFetchBlob.polyfill.Blob;

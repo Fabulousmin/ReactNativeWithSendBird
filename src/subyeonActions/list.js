@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from '@firebase/app'
 
 
 
@@ -7,8 +7,8 @@ export const sGetUserlist = () =>  {
     const usersRef = firebase.database().ref().child("users");
     const userlist = [];
      usersRef.on('child_added',(snap)=> {
-       const { sex, age, nickname, profileUrl, city, number, selfIntro, uid, updatedAt, liked } = snap.val();
-       const profile = { sex, age, nickname, profileUrl, city, number, selfIntro, uid, updatedAt, liked };
+       const { sex, age, nickname, profileUrl, city, number, selfIntro, uid, updatedAt,sendId } = snap.val();
+       const profile = { sex, age, nickname, profileUrl, city, number, selfIntro,sendId,uid, updatedAt };
        console.log(userlist);
        userlist.push(profile);
        resolve(userlist);
