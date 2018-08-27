@@ -61,7 +61,7 @@ class Store extends Component {
   componentDidMount() {
 
     this.props.initHeart();
-    this.setState(async () => {await this.props.getHeart();});
+    this.setState( () => { this.props.getHeart();});
 
   }
 

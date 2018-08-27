@@ -7,8 +7,7 @@ import { sbConnect } from '../sendbirdActions';
 import RNKakaoLogins from 'react-native-kakao-logins';
 import axios from 'axios';
 import { sUpdateProfile } from '../subyeonActions';
-
-const firebase = require('firebase');
+import firebase from '@firebase/app'
 
 export const initLogin = () => {
     return { type: INIT_LOGIN };
